@@ -1,0 +1,360 @@
+---
+title: "Reproducible Figures - Assessed"
+format: html
+fig-width: 10
+fig-height: 9
+editor: visual
+---
+
+## ![Adelie Penguin Walking](images/Adelie%20Penguin%20Image.jpeg)
+
+### **QUESTION 01: Data Visualisation for Science Communication**
+
+```{r}
+#| echo: true
+#| warning: false
+#| message: false
+#| label: loadingdata
+renv::restore() #stores appropriate versions of libraries downloading 
+
+### download necessary libraries 
+library(boot)
+library(dplyr)
+library(here)
+library(hrbrthemes)
+library(ggplot2)
+library(gridExtra)
+library(janitor)
+library(palmerpenguins)
+library(ragg)
+library(svglite)
+library(tidyr)
+library(tidyverse)
+library(viridis)
+
+#turning the palmer penguins raw data into a csv file: 
+write_csv(penguins_raw, here("data", "penguins_raw.csv")) 
+
+#reading in the csv file: 
+penguins_raw <- read.csv(here("data", "penguins_raw.csv"))
+
+#creating a piped function to clean the penguin data:
+
+cleaning_penguins <- function(penguins_raw){
+  penguins_raw %>%
+    clean_names() %>%
+    remove_empty(c("rows", "cols")) %>%
+    select(-starts_with("delta")) %>%
+    select(-"comments")
+}
+
+penguins_clean <- cleaning_penguins(penguins_raw) #assign the cleaned data 
+
+#writing a csv with the new, cleaned data:
+write.csv(penguins_clean, here("data", "penguins_clean.csv")) 
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: misleadinggraph
+#| fig-cap: Misleading Graph
+
+#creating a misleading graph using the ggplot function 
+
+ggplot(penguins_clean, aes(x = culmen_length_mm, y = body_mass_g)) + #assigning data and axes
+  geom_point(aes(color = island), alpha = 0.5) + #scatter graph format, assigning islands 
+  geom_jitter(aes(color = island), width = 20, height = 20) + #increasing jitter on islands
+  geom_smooth(method = "lm", color = "yellow", se = TRUE) + #creating a linear regression with standard error 
+  scale_x_reverse() + #reversing the x-axis
+  labs(title = "Does Culmen Length Affect Body Mass in Different Penguin Species?", #graph title
+       x = "Length", #x labels 
+       y = "Mass") + #y labels 
+  theme_minimal() #assigning a theme 
+```
+
+In order to make a plot which is correct, but badly communicates the underlying data, I made a series of design choices in the generation process to mislead the reader. I chose to visualise the relationship between culmen length (measured in mm), and body mass (measured in grams). However, the axes titles I used were highly generalised to "Length" and "Mass", without their units, in order to minimise the possibility of appropriate interpretation. I chose to build a scatter plot - which are generally used to represent a relationship between two continuous variables. However, I gave the title "Does Culmen Length Affect Body Mass in Different Penguin Species"; intimating a causal study, when in fact the visualisation produced is purely correlational. Moreover, I chose to subset the data with regards to Island, as different species of penguin are found on different islands. Specifically, Adelaides are found on all islands, Gentoos only on Biscoe and Chinstraps only on Dream. As such, information about species cannot be divined from visualisations of islands, as is implied by the title. Islands were colour-coded using a very colour-blind unfriendly palette, including simultaneous use of reds and greens. I added a regression line to the plot, with standard errors that are not explained, and therefore very difficult to interpret. With regards to the axes, I reversed Length on the x-axis, in order to mislead a reader on initial assessment into perceiving the correlation as negative when it is actually positive. Finally, I also increased the "jitter" to 20. This added a significant amount of random noise to the plot. Visually spreading out the points extended them past the linear regression, making it even harder to interpret.
+
+### **QUESTION 02: Data Pipeline**
+
+#### Introduction
+
+The Palmer Penguins dataset records observations of foraging Adélie (*Pygoscelis adeliae*), Chinstrap (*Pygoscelis antarcticus*) and Gentoo (*Pygoscelis papua*) penguin species, near the Palmer Station, in the Palmer Archipelago, Antarctica. Recorded observations for each individual notes the specific species, as well as the specific island (of Briscoe, Dream or Torgersen) in the Anvers region; as well as the developmental stage. Each observation is given an ID. Data collected include: clutch completion (either yes or no), the date of egg laying (YYYY-MM-DD), culmen length and depth as well as flipper length (all measured in mm), body mass (measured in grams), and sex (M/F).
+
+Previous research has investigated \[...\].
+
+In my pipeline, I will pose my [questions]{.underline} and [hypotheses]{.underline}, explain the [statistical method]{.underline} I have chosen to adopt for my present analysis, explore and discuss my [results]{.underline}, and ultimately [conclude]{.underline} my analysis with reference to its wider relevance.
+
+\[discuss the pipeline wrt the data\]
+
+**My question:** is there a correlation between body mass and flipper length in different penguin species' (Adélie, Chinstrap and Gentoo)?
+
+\[find someone who has investigated something similar and explain the concept of allometry - maybe go back to the orig suggestion\]
+
+#### Hypothesis
+
+**My Null Hypothesis (H~0~):** there is no correlation between body mass and flipper length in any of the investigated penguin species'.
+
+**My Alternate Hypothesis (H~A~):** there is a correlation between body mass and flipper length in one (or more) of the investigated penguin species'.
+
+\[give a scientific context to these hypotheses\]
+
+#### Stats Method
+
+In order to test my H0, I aim to conduct a Pearson's correlation coefficient analysis on two numerical variables included within the Palmer Penguins dataset - body mass (measured in grams), and flipper length (measured in mm).
+
+\[give the equation for Pearson's using LaTeX\]
+
+#### Results
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+#| label: exploratoryfigure
+#| fig-cap: Fig 1, exploratory figure
+
+##Firstly, I create a density plot of body masses by species 
+
+body_mass_density <- ggplot(data=penguins_clean, aes(x=body_mass_g, group=species, fill=species)) + #assigning a ggplot to penguins data with my variable of interest: body mass on x axes; subset by species 
+  geom_density(adjust=1, alpha = 0.75) + #density plot, smoothed to 1.0 for readability, and made slightly more transparent (0.75) for aesthetics 
+  scale_fill_viridis(discrete = TRUE, alpha = 0.75) + #colour-friendly palette fills plots,    made slightly transparent for aesthetics  
+  scale_color_viridis(discrete = TRUE, alpha = 0.75) + #colour-friendly palette around outside, too 
+  labs(title = "Fig 1a | Density of Body Masses by Species", #graph title with figure reference
+       x = "Body Mass (g)", #x-axis title with units 
+       y = "Density") + #y-axis title (does not require units)
+  theme_ipsum() + #chosen for publication-quality figures 
+  theme(
+    legend.position="right", #moving the legend to the right, for readability 
+    plot.title = element_text(hjust = 0.5, vjust = 0, size =15, face = "bold", family = "Times New Roman"), ### adjusting axes titles, text and legends for aesthetic spacing (central location), larger font size and emboldened for readability, publication-quality font chosen
+    axis.title.x = element_text(hjust = 0.5, size = 12, family = "Times New Roman"),
+    axis.title.y = element_text(hjust = 0.5, size = 12, family = "Times New Roman"),
+    axis.text.x = element_text(size = 9, family = "Times New Roman"),
+    axis.text.y = element_text(size = 9, family = "Times New Roman"),
+    legend.key.size = unit(1.1, "cm"),
+    legend.title = element_text(size = 11.5, family = "Times New Roman"),
+    legend.text = element_text(size = 8, family = "Times New Roman"))
+
+## Next, I create the same plot, but for flipper length. 
+
+flipper_length_density <- ggplot(data=penguins_clean, aes(x=flipper_length_mm, group=species, fill=species)) +
+  geom_density(adjust=1, alpha = 0.75) +
+  scale_fill_viridis(discrete = TRUE, alpha = 0.75) +
+  scale_color_viridis(discrete = TRUE, alpha = 0.75) +
+  labs(title = "Fig 1b | Density of Flipper Lengths by Species", 
+       x = "Flipper Length (mm)", 
+       y = "Density") +
+  theme_ipsum() +
+  theme(
+    legend.position="right",
+    plot.title = element_text(hjust = 0.5, vjust = 0, size =15, face = "bold", family = "Times New Roman"),
+    axis.title.x = element_text(hjust = 0.5, size = 12, family = "Times New Roman"),
+    axis.title.y = element_text(hjust = 0.5, size = 12, family = "Times New Roman"),
+    axis.text.x = element_text(size = 9, family = "Times New Roman"),
+    axis.text.y = element_text(size = 9, family = "Times New Roman"),
+    legend.key.size = unit(1.1, "cm"),
+    legend.title = element_text(size = 11.5, family = "Times New Roman"),
+    legend.text = element_text(size = 8, family = "Times New Roman"))
+
+## Now, I print them both as a mutli-panel figure
+
+grid.arrange(body_mass_density, flipper_length_density, nrow = 2)
+```
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+#| label: saving exploratory figure
+
+## In order to save this figure, I create another function: 
+
+save_figure_png <- function(plot_object,
+                        filename, size, res, scaling) {
+  agg_png(filename, 
+          width = size, 
+          height = size, 
+          units = "cm", 
+          res = res, 
+          scaling = scaling
+          )
+  print(plot_object)
+  dev.off()
+}
+
+## Then call this function with regard to the exploratory figure:
+
+save_figure_png(body_mass_density,
+                here("figures", "Figure1_body_mass_density_plot.png"), 
+                size = 50, res = 500, scaling = 2)
+save_figure_png(flipper_length_density,
+                here("figures", "Figure1_flipper_length_density_plot.png"), 
+                size = 50, res = 500, scaling = 2)
+```
+
+Firstly, I generated an exploratory figure to show the distribution of the raw data for my two variables of interest: body mass (g), and flipper length (mm). Initially, we are not addressing my hypotheses, but gaining an appreciation for the data \[cite\].
+
+Fig 1a shows us overlapping densities of body masses between the 3 species \[explain\]. However, a rough hierarchy emerges with regards to increasing body mass: Gentoo \> Chinstrap \> Adélie.
+
+Fig 1b recapitulates a similar pattern. Despite density overlap, an approximate hierarchy of increasing flipper length of Gentoo \> Chinstrap \> Adélie also emerges.
+
+According to our exploratory Figure, very similar patterns emerge with regard to the density values for the morphological \[morphometric?\] traits of both body mass and flipper length.
+
+*Are these morphology characteristics correlated?*
+
+```{r}
+#| echo: true
+#| warning: false
+#| message: false
+#| label: correlation test 
+#| fig-cap: Correlation Test
+
+## Firstly, I extract the correlation coefficient and associated p-values from the cleaned penguin data, subset by species
+
+correlation_data <- penguins_clean %>%
+  group_by(species) %>%
+  summarize(
+    correlation_coefficient = cor(body_mass_g, flipper_length_mm, use = "complete.obs"), #removed any rows with NA, which would prevent a correlation calculation
+    p_value = cor.test(body_mass_g, flipper_length_mm)$p.value) %>%
+   as.data.frame() #organise as a table
+
+## Then, I use the knitr package to create a more readable table. This requires 25 digits to display a comparative p-value for Gentoo; it being so small. I add a title, for further readability. 
+
+knitr::kable(correlation_data, format = "markdown", digits = 25, caption = "Species correlation coefficients and associated p-values")
+
+```
+
+```{r}
+#| echo: true
+#| warning: false
+#| message: false
+#| label: results figure
+#| fig-cap: Fig 2, results figure
+
+## To create my Results Figure, I will generate a triplet scatterplot of flipper length against body mass by species, show the linear correlation with a regression line and standard error, and print the significant p-values atop this. 
+
+results_figure <- ggplot(penguins_clean, aes(x = body_mass_g, y = flipper_length_mm, color = species)) +
+  geom_point(size = 2.5, alpha = 0.75) +
+  geom_smooth(method = "lm", se = TRUE) +  # Removed the `fill` aesthetic
+  scale_color_viridis_d() +
+  labs(
+    title = "Fig 2 | Scatter Graph of Flipper Length Against Body Mass, Colored by Species",
+    x = "Body Mass (g)",
+    y = "Flipper Length (mm)",
+    color = "Species"
+  ) +
+  theme_minimal() +
+  scale_x_continuous(limits = c(2500, 6500)) +
+  scale_y_continuous(limits = c(160, 240)) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 18, family = "Times New Roman"),
+    axis.title = element_text(face = "bold", size = 17, family = "Times New Roman"),
+    axis.text = element_text(size = 12, family = "Times New Roman"),
+    legend.key.size = unit(0.3, "cm"),
+    legend.position = "bottom",
+    legend.direction = "horizontal",
+    legend.title = element_text(size = 15, family = "Times New Roman"),
+    legend.text = element_text(size = 12, family = "Times New Roman")
+  ) +
+  annotate("text", x = 5500, y = 190, 
+           label = paste("Adelie: p =", format(correlation_data$p_value[1], scientific = TRUE)),
+           size = 4, hjust = 0, fontface = "bold", colour = "black") +
+  annotate("text", x = 5500, y = 185, 
+           label = paste("Chinstrap: p =", format(correlation_data$p_value[2], scientific = TRUE)),
+           size = 4, hjust = 0, fontface = "bold", colour = "black") +
+  annotate("text", x = 5500, y = 180, 
+           label = paste("Gentoo: p =", format(correlation_data$p_value[3], scientific = TRUE)),
+           size = 4, hjust = 0, fontface = "bold", colour = "black")
+
+
+results_figure
+```
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+#| label: saving results figure
+
+## I reuse the previously made function to save the results figure: 
+
+save_figure_png(results_figure,
+                here("figures", "Figure2_scatter_plot.png"), 
+                size = 30, res = 100, scaling = 1)
+```
+
+Fig 2 is a scatter plot, which shows a multi-panel figure of 3 different plots: one for each Species. It depicts the relationship between Body Mass (g), given on the x-axis in the 3 separate plots, and Flipper Length (mm), given on the general y-axis.
+
+The leftmost plot shows the relationship between Body Mass (g) and Flipper Length (mm) for Adélie penguins, shown in purple. Here we see a highly significant positive correlation, which can be visually assessed. Annotated is the exact significance value returned from the Pearson's correlation coefficient test: p = 1.343 x10\^9.
+
+The central plot shows the relationship between Body Mass (g) and Flipper Length (mm) for Chinstrap penguins, shown in teal. Once again we see a highly significant positive correlation, which can be visually assessed. It can also be perceived that this correlation may be slightly greater than that of the Adélie penguins, by its slightly steeper incline. Annotated is the exact significance value returned from the Pearson's correlation coefficient test: p = 3.748 x10\^9. This lower p value further suggests that the correlation may be stronger in the case of the Chinstrap penguin, when compared to the Adélie penguin.
+
+Finally, the rightmost plot shows the relationship between Body Mass (g) and Flipper Length (mm) for Gentoo penguins, shown in yellow. We see a final highly significant positive correlation, which can too be visually assessed. It can also be perceived that this correlation may be slightly greater than that of the Adélie penguins, by its slightly steeper incline. Annotated is the exact significance value returned from the Pearson's correlation coefficient test: p = 3.748 x10\^9. This lower p value further suggests that the correlation may be stronger in the case of the Chinstrap penguin, when compared to the Adélie penguin.
+
+\[cite something which says why using a scatter plot in this instance is useful\].
+
+\[use confidence intervals but clearly explain what they show\]
+
+\[relate plots to statistical tests, and to original hypotheses\]
+
+```{r}
+#| echo: true
+#| warning: false
+#| message: false
+#| label: bootstrapped correlation test 
+#| fig-cap: Bootstrapped Correlation Test
+
+## For my boostrapped correlation test, I first define a function, which is saved in the functions folder, for ease of access. 
+
+correlation_function <- function(data, indices) {
+  resampled_data <- data[indices, ]
+  cor(resampled_data$body_mass_g, resampled_data$flipper_length_mm, use = "complete.obs")
+} #any rows with NA are not taken into consideration, as this would prevent the calculation of a correlation 
+
+## Next, I run the bootstrapping for each species using this function. I set a seed to ensure reproducibility. 
+
+bootstrap_results <- penguins_clean %>%
+  group_by(species) %>%
+  do({
+    set.seed(2963)
+    res <- boot(data = ., statistic = correlation_function, R = 1000) #repeated 1000 times, according to convention from the literature (cited below)
+    ci_lower <- quantile(res$t, 0.025) #calculating the lower bound of the 95% confidence interval
+    ci_upper <- quantile(res$t, 0.975) #calculating the upper bound of the 95% confidence interval
+    data.frame(correlation = mean(res$t), ci_lower = ci_lower, ci_upper = ci_upper)
+  }) #outputting the result as a table
+
+# Building a nicer looking table, for readibility. 4dp again chosen for scientific precision. Appropriate title given. 
+knitr::kable(bootstrap_results, format = "markdown", digits = 4, caption = "Correlation Coefficients + 95% CIs for Bootstrapped Data")
+```
+
+#### Discussion
+
+#### Conclusion
+
+Relate to a broader context
+
+#### Supplementary Material
+
+::: callout-important
+## Pearson's Correlation Coefficient requires data to be normal
+:::
+
+```{r}
+#| echo: true
+#| warning: false
+#| message: false
+#| label: normality testing 
+
+## In order to appropriately apply a Pearson's r correlation coefficient, the data must be normal. I check this using a QQ-Plot. 
+
+#the initial qq-plot to test the normality of the body mass data, given an appropriate title, and summarised in red by convention 
+
+qqnorm(penguins_clean$body_mass_g, main = "QQ Plot for Body Mass (g)")
+qqline(penguins_clean$body_mass_g, col = "red")
+
+## Next, I test the normality of the flipper data, using the same format. 
+
+qqnorm(penguins_clean$flipper_length_mm, main = "QQ Plot for Flipper Length (mm)")
+qqline(penguins_clean$flipper_length_mm, col = "red")
+```
