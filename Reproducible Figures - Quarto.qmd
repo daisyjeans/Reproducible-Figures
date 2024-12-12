@@ -10,6 +10,8 @@ editor: visual
 
 ### **QUESTION 01: Data Visualisation for Science Communication**
 
+Initially, I will be using the Palmer Penguin dataset to build a misleading graph. This firstly requires appropriate loading and cleaning of the data. My code is as follows:
+
 ```{r}
 #| echo: true
 #| warning: false
@@ -54,6 +56,8 @@ penguins_clean <- cleaning_penguins(penguins_raw) #assign the cleaned data
 write.csv(penguins_clean, here("data", "penguins_clean.csv")) 
 ```
 
+My misleading graph is the following:
+
 ```{r}
 #| echo: false
 #| warning: false
@@ -82,13 +86,9 @@ In order to make a plot which is correct, but badly communicates the underlying 
 
 The Palmer Penguins dataset records observations of foraging Adélie (*Pygoscelis adeliae*), Chinstrap (*Pygoscelis antarcticus*) and Gentoo (*Pygoscelis papua*) penguin species, near the Palmer Station, in the Palmer Archipelago, Antarctica. Recorded observations for each individual notes the specific species, as well as the specific island (of Briscoe, Dream or Torgersen) in the Anvers region; as well as the developmental stage. Each observation is given an ID. Data collected include: clutch completion (either yes or no), the date of egg laying (YYYY-MM-DD), culmen length and depth as well as flipper length (all measured in mm), body mass (measured in grams), and sex (M/F).
 
-Previous research has investigated \[...\].
+In my pipeline, having loaded and cleaned my data, I will pose my [questions]{.underline} and [hypotheses]{.underline}, explain the [statistical method]{.underline} I have chosen to adopt for my present analysis, explore and discuss my [results]{.underline} (using both an exploratory and a results figure, which I will save[)]{.underline}, and ultimately [conclude]{.underline} my analysis with reference to its wider relevance.
 
-In my pipeline, I will pose my [questions]{.underline} and [hypotheses]{.underline}, explain the [statistical method]{.underline} I have chosen to adopt for my present analysis, explore and discuss my [results]{.underline}, and ultimately [conclude]{.underline} my analysis with reference to its wider relevance.
-
-\[discuss the pipeline wrt the data\]
-
-**My question:** is there a correlation between body mass and flipper length in different penguin species' (Adélie, Chinstrap and Gentoo)?
+**My question:** is there a correlation between body mass and flipper length in different penguin species' (here: Adélie, Chinstrap and Gentoo)?
 
 \[find someone who has investigated something similar and explain the concept of allometry - maybe go back to the orig suggestion\]
 
@@ -102,11 +102,21 @@ In my pipeline, I will pose my [questions]{.underline} and [hypotheses]{.underli
 
 #### Stats Method
 
-In order to test my H0, I aim to conduct a Pearson's correlation coefficient analysis on two numerical variables included within the Palmer Penguins dataset - body mass (measured in grams), and flipper length (measured in mm).
+In order to test my H~0~, I aim to conduct a Pearson's correlation coefficient analysis on two numerical variables included within the Palmer Penguins dataset - body mass (measured in grams), and flipper length (measured in mm). \[cite a study which shows doing this is good and why; maybe explain what a correlation actually is\]
 
-\[give the equation for Pearson's using LaTeX\]
+The equation for Pearson's correlation coefficient is given as:
+
+$$r = \Sigma(x_i-\bar x)(y_i-\bar y)/ \sqrt\Sigma(x_i-\bar x)(y_i-\bar y)$$\$\$\$\$
+
+To compare correlations between each species, I bootstrapped the correlation coefficient estimates \[cite a source saying why you did this\]. In order to make this bootstrapping reproducible, I have set a seed in my code.
+
+Pearson's correlation coefficient assumes that data are distributed normally. I have tested this in the [Supplementary Materials]{.underline} section.
 
 #### Results
+
+To gain an initial appreciation of the data, but not yet to run any statistical tests, I first created an exploratory figure \[cite why this is important\].
+
+Here, I generated a y figure to show the distribution of the raw data for my two variables of interest: body mass (g), and flipper length (mm).
 
 ```{r}
 #| echo: true
@@ -162,6 +172,14 @@ flipper_length_density <- ggplot(data=penguins_clean, aes(x=flipper_length_mm, g
 grid.arrange(body_mass_density, flipper_length_density, nrow = 2)
 ```
 
+Fig 1a shows body mass (g) on the x-axis, and density \[explain\] on the y-axis. Here, we can perceive overlapping densities of body masses between the 3 species \[explain\]. However, a rough hierarchy emerges with regards to increasing body mass: Gentoo (yellow) \> Chinstrap (teal) \> Adélie (purple).
+
+Fig 1b recapitulates a similar pattern. Here, we have flipper length (mm) on the x-axis, and density on the y-axis. Despite density overlap, an approximate hierarchy of increasing flipper length of Gentoo \> Chinstrap \> Adélie also emerges.
+
+Hence, according to our exploratory Figure, very similar patterns emerge with regard to the density values for the morphological \[morphometric?\] traits of both body mass and flipper length.
+
+For reproducibility, it is important that the figures as I have generated them under this current investigation are saved and kept. \[cite?\] They can be found in the "figures" folder of my Reproducible Figures GitHub repository, linked here \[...\]. I give the code for my figure-saving function, which itself is also saved in the "functions" folder of my Reproducible Figures GitHub repository, below.
+
 ```{r}
 #| echo: true
 #| message: false
@@ -193,15 +211,9 @@ save_figure_png(flipper_length_density,
                 size = 50, res = 500, scaling = 2)
 ```
 
-Firstly, I generated an exploratory figure to show the distribution of the raw data for my two variables of interest: body mass (g), and flipper length (mm). Initially, we are not addressing my hypotheses, but gaining an appreciation for the data \[cite\].
+*Are the morphological traits of body mass and flipper length characteristics correlated?*
 
-Fig 1a shows us overlapping densities of body masses between the 3 species \[explain\]. However, a rough hierarchy emerges with regards to increasing body mass: Gentoo \> Chinstrap \> Adélie.
-
-Fig 1b recapitulates a similar pattern. Despite density overlap, an approximate hierarchy of increasing flipper length of Gentoo \> Chinstrap \> Adélie also emerges.
-
-According to our exploratory Figure, very similar patterns emerge with regard to the density values for the morphological \[morphometric?\] traits of both body mass and flipper length.
-
-*Are these morphology characteristics correlated?*
+To test this, I conduct a Pearson's correlation coefficient analysis.
 
 ```{r}
 #| echo: true
@@ -225,6 +237,10 @@ knitr::kable(correlation_data, format = "markdown", digits = 25, caption = "Spec
 
 ```
 
+Here, our table output shows a positive correlation coefficient for each of the 3 species, between body mass and flipper length. Moreover, each of these positive correlations is highly significant under the Pearson's correlation coefficient analysis. This is shown by each of their associated p values being \<0.05, the conventionally utilised alpha significance level \[cite\]\].
+
+Correlations are more easily appreciated under visualisation. To facilitate this therefore, I built a scatter plot results figure, displaying the correlation between body mass (g) and flipper length (mm), for each species.
+
 ```{r}
 #| echo: true
 #| warning: false
@@ -234,7 +250,7 @@ knitr::kable(correlation_data, format = "markdown", digits = 25, caption = "Spec
 
 ## To create my Results Figure, I will generate a triplet scatterplot of flipper length against body mass by species, show the linear correlation with a regression line and standard error, and print the significant p-values atop this. 
 
-results_figure <- ggplot(penguins_clean, aes(x = body_mass_g, y = flipper_length_mm, color = species)) +
+results_figure <- ggplot(penguins_clean, aes(x = body_mass_g, y = flipper_length_mm, color = species, shape = species)) +
   geom_point(size = 2.5, alpha = 0.75) +
   geom_smooth(method = "lm", se = TRUE) +  # Removed the `fill` aesthetic
   scale_color_viridis_d() +
@@ -259,10 +275,10 @@ results_figure <- ggplot(penguins_clean, aes(x = body_mass_g, y = flipper_length
   ) +
   annotate("text", x = 5500, y = 190, 
            label = paste("Adelie: p =", format(correlation_data$p_value[1], scientific = TRUE)),
-           size = 4, hjust = 0, fontface = "bold", colour = "black") +
+           size = 4, hjust = 0, fontface = "bold", colour = "purple") +
   annotate("text", x = 5500, y = 185, 
            label = paste("Chinstrap: p =", format(correlation_data$p_value[2], scientific = TRUE)),
-           size = 4, hjust = 0, fontface = "bold", colour = "black") +
+           size = 4, hjust = 0, fontface = "bold", colour = "blue") +
   annotate("text", x = 5500, y = 180, 
            label = paste("Gentoo: p =", format(correlation_data$p_value[3], scientific = TRUE)),
            size = 4, hjust = 0, fontface = "bold", colour = "black")
@@ -270,6 +286,22 @@ results_figure <- ggplot(penguins_clean, aes(x = body_mass_g, y = flipper_length
 
 results_figure
 ```
+
+Figure 2 is a scatter plot which shows body mass (g) on the x-axis, and flipper length (mm) on the y-axis. \[cite something which says why using a scatter plot in this instance is useful\].
+
+Each of the species of penguin demonstrates a positive correlation between these two variables, which can be assessed visually, by use of the species-specific regression lines. \[explain why you used a regression line in this instance\].
+
+Standard errors surround these regression lines in shaded grey, in order to \[...\].
+
+Notably, a Pearson's correlation coefficient also assumes an approximately linear relationship between variables \[cite\], which can also be verified using this scatter plot.
+
+The significant p-values for each species are also annotated onto the plot, for ease of visual appreciation. Notably, the Gentoo p-value must be displayed in black as opposed to yellow, for readability.
+
+Clearly, this results plot exemplifies the positive correlation between body mass and flipper length for all 3 of the penguin species.
+
+\[link back to hypotheses\].
+
+Once again, it is important for maximum reproducibility that there is a saved copy of my generated Figure 2. I save it to the "figures" folder of my GitHub repository using the following code:
 
 ```{r}
 #| echo: true
@@ -284,19 +316,11 @@ save_figure_png(results_figure,
                 size = 30, res = 100, scaling = 1)
 ```
 
-Fig 2 is a scatter plot, which shows a multi-panel figure of 3 different plots: one for each Species. It depicts the relationship between Body Mass (g), given on the x-axis in the 3 separate plots, and Flipper Length (mm), given on the general y-axis.
+It is clear that there exist positive correlations between body mass (g) and flipper length (mm) for all 3 penguin species. \[maybe mention how the p value for Gentoo is order of magntidue different\].
 
-The leftmost plot shows the relationship between Body Mass (g) and Flipper Length (mm) for Adélie penguins, shown in purple. Here we see a highly significant positive correlation, which can be visually assessed. Annotated is the exact significance value returned from the Pearson's correlation coefficient test: p = 1.343 x10\^9.
+*Do these correlations significantly vary between the species?*
 
-The central plot shows the relationship between Body Mass (g) and Flipper Length (mm) for Chinstrap penguins, shown in teal. Once again we see a highly significant positive correlation, which can be visually assessed. It can also be perceived that this correlation may be slightly greater than that of the Adélie penguins, by its slightly steeper incline. Annotated is the exact significance value returned from the Pearson's correlation coefficient test: p = 3.748 x10\^9. This lower p value further suggests that the correlation may be stronger in the case of the Chinstrap penguin, when compared to the Adélie penguin.
-
-Finally, the rightmost plot shows the relationship between Body Mass (g) and Flipper Length (mm) for Gentoo penguins, shown in yellow. We see a final highly significant positive correlation, which can too be visually assessed. It can also be perceived that this correlation may be slightly greater than that of the Adélie penguins, by its slightly steeper incline. Annotated is the exact significance value returned from the Pearson's correlation coefficient test: p = 3.748 x10\^9. This lower p value further suggests that the correlation may be stronger in the case of the Chinstrap penguin, when compared to the Adélie penguin.
-
-\[cite something which says why using a scatter plot in this instance is useful\].
-
-\[use confidence intervals but clearly explain what they show\]
-
-\[relate plots to statistical tests, and to original hypotheses\]
+in order to address this question, it is best practice to bootstrap our Pearson's correlation coefficient estimates \[cite\].
 
 ```{r}
 #| echo: true
@@ -328,7 +352,13 @@ bootstrap_results <- penguins_clean %>%
 knitr::kable(bootstrap_results, format = "markdown", digits = 4, caption = "Correlation Coefficients + 95% CIs for Bootstrapped Data")
 ```
 
+The results of this bootstrapping of our Pearson's correlation coefficient estimates shows that all 95% confidence intervals overlap \[why is this important?\].
+
+As such, we can infer that there is no significant difference between the strength of the positive correlation between body mass (g), and flipper length (mm), between these 3 different species of penguin.
+
 #### Discussion
+
+\[write a small para about the biological significance of each of the data in turn\].
 
 #### Conclusion
 
