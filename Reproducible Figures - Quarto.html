@@ -83,6 +83,25 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 
@@ -190,8 +209,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The Palmer Penguins dataset records observations of foraging Adélie (<em>Pygoscelis adeliae</em>), Chinstrap (<em>Pygoscelis antarcticus</em>) and Gentoo (<em>Pygoscelis papua</em>) penguin species, near the Palmer Station, in the Palmer Archipelago, Antarctica. Recorded observations for each individual notes the specific species, as well as the specific island (of Briscoe, Dream or Torgersen) in the Anvers region; as well as the developmental stage. Each observation is given an ID. Data collected include: clutch completion (either yes or no), the date of egg laying (YYYY-MM-DD), culmen length and depth as well as flipper length (all measured in mm), body mass (measured in grams), and sex (M/F).</p>
 <p>In my pipeline, having loaded and cleaned my data, I will pose my <u>questions</u> and <u>hypotheses</u>, explain the <u>statistical method</u> I have chosen to adopt for my present analysis, explore and discuss my <u>results</u> (using both an exploratory and a results figure, which I will save<u>)</u>, and ultimately <u>conclude</u> my analysis with reference to its wider relevance.</p>
 <p><strong>My question:</strong> is there a correlation between body mass and flipper length in different penguin species’ (here: Adélie, Chinstrap and Gentoo)?</p>
-<p>Correlations between morphological traits (such as body mass and flipper length) are sometimes controlled by morphometric scaling <span class="citation" data-cites="shingleton2010">[@shingleton2010]</span>. Morphometrically-scaled correlations are underpinned by the study of allometry: differences in the morphological growth <span class="citation" data-cites="nijhout2012">[@nijhout2012]</span>. Allometry is considered interesting fundamentally, but also partly because morphological structure and function can exert a profound effect on an organism’s ecology.</p>
-<p>I find penguin allometry a specifically interesting case study to run, because of the observed effect of penguin morphology on ecology. For example, we already know that penguins with a larger body mass and flipper length can dive deeper to forage, due to their muscle mass <span class="citation" data-cites="mccomb-turbitt2023">[@mccomb-turbitt2023]</span>. In order to explore whether this ecological phenomenon might be underpinned by morphometric scaling, investigating a potential correlation is an interesting place to start.</p>
+<p>Correlations between morphological traits (such as body mass and flipper length) are sometimes controlled by morphometric scaling <span class="citation" data-cites="shingleton2010">(<a href="#ref-shingleton2010" role="doc-biblioref">Shingleton 2010</a>)</span>. Morphometrically-scaled correlations are underpinned by the study of allometry: differences in the morphological growth <span class="citation" data-cites="nijhout2012">(<a href="#ref-nijhout2012" role="doc-biblioref">Nijhout 2012</a>)</span>. Allometry is considered interesting fundamentally, but also partly because morphological structure and function can exert a profound effect on an organism’s ecology.</p>
+<p>I find penguin allometry a specifically interesting case study to run, because of the observed effect of penguin morphology on ecology. For example, we already know that penguins with a larger body mass and flipper length can dive deeper to forage, due to their muscle mass <span class="citation" data-cites="mccomb-turbitt2023">(<a href="#ref-mccomb-turbitt2023" role="doc-biblioref">McComb-Turbitt 2023</a>)</span>. In order to explore whether this ecological phenomenon might be underpinned by morphometric scaling, investigating a potential correlation is an interesting place to start.</p>
 </section>
 <section id="hypothesis" class="level4">
 <h4 class="anchored" data-anchor-id="hypothesis">Hypothesis</h4>
@@ -202,17 +221,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="stats-method" class="level4">
 <h4 class="anchored" data-anchor-id="stats-method">Stats Method</h4>
 <p>In order to test my H<sub>0</sub>, I conduct a Pearson’s correlation coefficient analysis on two numerical variables included within the Palmer Penguins dataset - body mass (measured in grams), and flipper length (measured in mm).</p>
-<p>Pearson’s correlation coefficient is a parametric measure of the linear relationship between two numeric variables, which can range from -1 (a perfect negative correlation), to +1 (a perfect positive correlation). It is useful as an introductory point for testing Hypotheses such as mine, because it is a relatively simple statistical measure, that is commonly employed and therefore well-understood .</p>
-<p>Pearson’s correlation coefficient has precedent for use in investigating potential morphometric scaling. For example, it has previously been used in studying correlations between human brain segregation and integration units <span class="citation" data-cites="li2024">[@li2024]</span>.</p>
+<p>Pearson’s correlation coefficient is a parametric measure of the linear relationship between two numeric variables, which can range from -1 (a perfect negative correlation), to +1 (a perfect positive correlation). It is useful as an introductory point for testing Hypotheses such as mine, because it is a relatively simple statistical measure, that is commonly employed and therefore well-understood<span class="citation" data-cites="hashash2022">(<a href="#ref-hashash2022" role="doc-biblioref">Hashash 2022a</a>)</span> .</p>
+<p>Pearson’s correlation coefficient has precedent for use in investigating potential morphometric scaling. For example, it has previously been used in studying correlations between human brain segregation and integration units <span class="citation" data-cites="li2024">(<a href="#ref-li2024" role="doc-biblioref">Li 2024</a>)</span>.</p>
 <p>The equation for Pearson’s correlation coefficient is given as:</p>
 <p><span class="math display">\[r = \Sigma(x_i-\bar x)(y_i-\bar y)/ \sqrt\Sigma(x_i-\bar x)(y_i-\bar y)\]</span>$$$$</p>
-<p>To compare correlations between each species, I bootstrapped the correlation coefficient estimates [cite a source saying why you did this]. In order to make this bootstrapping reproducible, I have set a seed in my code.</p>
-<p>Pearson’s correlation coefficient assumes that data are distributed normally. I have tested this in the <u>Supplementary Materials</u> section.</p>
+<p>To compare correlations between each species, I bootstrapped the correlation coefficient estimates, in order to maximise statistical accuracy <span class="citation" data-cites="efron1993">(<a href="#ref-efron1993" role="doc-biblioref">Efron 1993</a>)</span>. In order to make this bootstrapping reproducible, I have set a seed in my code.</p>
+<p>Pearson’s correlation coefficient assumes that data are distributed normally <span class="citation" data-cites="hashash2022a">(<a href="#ref-hashash2022a" role="doc-biblioref">Hashash 2022b</a>)</span>. I have tested this in the <u>Supplementary Materials</u> section.</p>
 </section>
 <section id="results" class="level4">
 <h4 class="anchored" data-anchor-id="results">Results</h4>
-<p>To gain an initial appreciation of the data, but not yet to run any statistical tests, I first created an exploratory figure [cite why this is important].</p>
-<p>Here, I generated a y figure to show the distribution of the raw data for my two variables of interest: body mass (g), and flipper length (mm).</p>
+<p>To gain an initial appreciation of the data, but not yet to run any statistical tests, I first created an exploratory figure. Exploratory figures are important to gain an appreciation for your data, without yet subjecting it to any rigorous testing <span class="citation" data-cites="wickham2023">(<a href="#ref-wickham2023" role="doc-biblioref">Wickham 2023</a>)</span>.</p>
+<p>Here, I generated a density figure to show the distribution of the raw data for my two variables of interest: body mass (g), and flipper length (mm).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">##Firstly, I create a density plot of body masses by species </span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -268,10 +287,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-<p>Fig 1a shows body mass (g) on the x-axis, and density [explain] on the y-axis. Here, we can perceive overlapping densities of body masses between the 3 species [explain]. However, a rough hierarchy emerges with regards to increasing body mass: Gentoo (yellow) &gt; Chinstrap (teal) &gt; Adélie (purple).</p>
+<p>Density plots are useful because […]</p>
+<p>Fig 1a shows body mass (g) on the x-axis, and density (the smoothed distribution of the continuous data) on the y-axis. Here, we can perceive overlapping densities of body masses between the 3 species, illustrating that the penguins exhibit similar overall body masses. However, a rough hierarchy emerges with regards to increasing body mass: Gentoo (yellow) &gt; Chinstrap (teal) &gt; Adélie (purple).</p>
 <p>Fig 1b recapitulates a similar pattern. Here, we have flipper length (mm) on the x-axis, and density on the y-axis. Despite density overlap, an approximate hierarchy of increasing flipper length of Gentoo &gt; Chinstrap &gt; Adélie also emerges.</p>
-<p>Hence, according to our exploratory Figure, very similar patterns emerge with regard to the density values for the morphological [morphometric?] traits of both body mass and flipper length.</p>
-<p>For reproducibility, it is important that the figures as I have generated them under this current investigation are saved and kept. [cite?] They can be found in the “figures” folder of my Reproducible Figures GitHub repository, linked here […]. I give the code for my figure-saving function, which itself is also saved in the “functions” folder of my Reproducible Figures GitHub repository, below.</p>
+<p>Hence, according to our exploratory Figure, very similar patterns emerge with regard to the density values for the morphological traits of both body mass and flipper length.</p>
+<p>For reproducibility, it is important that the figures as I have generated them under this current investigation are saved and kept. [cite?] They can be found in the “figures” folder of my Reproducible Figures GitHub repository. I give the code for my figure-saving function, which itself is also saved in the “functions” folder of my Reproducible Figures GitHub repository, below.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## In order to save this figure, I create another function: </span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -540,10 +560,36 @@ Pearson’s Correlation Coefficient requires data to be normal
 <h3 class="anchored" data-anchor-id="question-03-data-visualisation-for-science-communication"><strong>QUESTION 03: Data Visualisation for Science Communication</strong></h3>
 <p>I have uploaded my RProject to GitHub: <a href="https://github.com/daisyjeans/Reproducible-Figures/tree/main" title="Git">Repository Link</a><br>
 N.B. two contributors are noted for this repository: daisyjeans and daisyjeans2. Both contributors are myself.</p>
+
 </section>
 </section>
 
-</main>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-efron1993" class="csl-entry" role="doc-biblioentry">
+Efron, Bradley. 1993. <em>An Introduction to the Bootstrap.</em> 1st ed. Vol. 1. 1st Series 1. Harvard: CRC Press. <a href="https://www.hms.harvard.edu/bss/neuro/bornlab/nb204/statistics/bootstrap.pdf">https://www.hms.harvard.edu/bss/neuro/bornlab/nb204/statistics/bootstrap.pdf</a>.
+</div>
+<div id="ref-hashash2022" class="csl-entry" role="doc-biblioentry">
+Hashash, El. 2022a. <span>“A Comparison of the Pearson, Spearman Rank and Kendall Tau Correlation Coefficients Using Quantitative Variables.”</span> <em>Asian Journal of Probability and Statistics.</em>, Correlations, 20. (1): 36–48. <a href="https://doi.org/10.9734/AJPAS/2022/v20i3425.">https://doi.org/10.9734/AJPAS/2022/v20i3425.</a>
+</div>
+<div id="ref-hashash2022a" class="csl-entry" role="doc-biblioentry">
+———. 2022b. <span>“A Comparison of the Pearson, Spearman Rank and Kendall Tau Correlation Coefficients Using Quantitative Variables.”</span> <em>Asian Journal of Probability and Statistics.</em>, Correlations, 20. (1): 36–48. <a href="https://doi.org/10.9734/AJPAS/2022/v20i3425.">https://doi.org/10.9734/AJPAS/2022/v20i3425.</a>
+</div>
+<div id="ref-li2024" class="csl-entry" role="doc-biblioentry">
+Li, J. 2024. <span>“Morphometric Brain Organization Across the Human Lifespan Reveals Increased Dispersion Linked to Cognitive Performance.”</span> <em>PLOS Biology</em>, Neurology, 22 (6): 1–24. <a href="https://doi.org/e3002647.">https://doi.org/e3002647.</a>
+</div>
+<div id="ref-mccomb-turbitt2023" class="csl-entry" role="doc-biblioentry">
+McComb-Turbitt, SP. 2023. <span>“Diving Efficiency at Depth and Pre-Breeding Foraging Effort Increase with Haemoglobin Levels in Gentoo Penguins.”</span> <em>Marine Ecology Progress Series.</em>, Diving, 722. (1): 1–17. <a href="https://doi.org/10.3354/meps14441.">https://doi.org/10.3354/meps14441.</a>
+</div>
+<div id="ref-nijhout2012" class="csl-entry" role="doc-biblioentry">
+Nijhout, Frederik. 2012. <span>“Developmental Causes of Allometry: New Models and Implications for Phenotypic Plasticity and Evolution.”</span> <em>Integrative and Comparative Biology</em>, Allometry, Volume 52, (Issue 1): Pages 4352. <a href="https://academic.oup.com/icb/article/52/1/43/741331">https://academic.oup.com/icb/article/52/1/43/741331</a>.
+</div>
+<div id="ref-shingleton2010" class="csl-entry" role="doc-biblioentry">
+Shingleton, Alexander. 2010. <span>“Allometry: The Study of Biological Scaling.”</span> <em>Nature Education Knowledge</em>, Nature education, 3 (10): 2. <a href="https://www.nature.com/scitable/knowledge/library/allometry-the-study-of-biological-scaling-13228439/">https://www.nature.com/scitable/knowledge/library/allometry-the-study-of-biological-scaling-13228439/</a>.
+</div>
+<div id="ref-wickham2023" class="csl-entry" role="doc-biblioentry">
+Wickham, Hadley. 2023. <em>R for Data Science: Import, Tidy, Transform, Visualise and Model Data</em>. 2nd ed. Vol. 1. 1st Series 2. Houston, Texas: O’Reilly Media. <a href="https://r4ds.hadley.nz">https://r4ds.hadley.nz</a>.
+</div>
+</div></section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

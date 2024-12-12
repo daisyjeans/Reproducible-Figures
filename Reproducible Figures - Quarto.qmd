@@ -4,7 +4,7 @@ format: html
 fig-width: 10
 fig-height: 9
 editor: visual
-biblography: references.bib
+bibliography: references.bib
 ---
 
 ## ![Adelie Penguin Walking](images/Adelie%20Penguin%20Image.jpeg)
@@ -92,9 +92,9 @@ In my pipeline, having loaded and cleaned my data, I will pose my [questions]{.u
 
 **My question:** is there a correlation between body mass and flipper length in different penguin species' (here: Adélie, Chinstrap and Gentoo)?
 
-Correlations between morphological traits (such as body mass and flipper length) are sometimes controlled by morphometric scaling [@shingleton2010]. Morphometrically-scaled correlations are underpinned by the study of allometry: differences in the morphological growth [@nijhout2012]. Allometry is considered interesting fundamentally, but also partly because morphological structure and function can exert a profound effect on an organism's ecology.
+Correlations between morphological traits (such as body mass and flipper length) are sometimes controlled by morphometric scaling [@shingleton2010]. Morphometrically-scaled correlations are underpinned by the study of allometry: differences in the morphological growth [@nijhout2012]. Allometry is a topic of current interest fundamentally, but also partly because morphological structure and function can exert a profound effect on an organism's ecology.
 
-I find penguin allometry a specifically interesting case study to run, because of the observed effect of penguin morphology on ecology. For example, we already know that penguins with a larger body mass and flipper length can dive deeper to forage, due to their muscle mass [@mccomb-turbitt2023]. In order to explore whether this ecological phenomenon might be underpinned by morphometric scaling, investigating a potential correlation is an interesting place to start.
+I find penguin allometry a specifically interesting case study to run, because of the proposed effect of penguin morphology on ecology, arising from morphometric scaling. For example, we already know that Gentoo penguins with a larger body mass and flipper length can dive deeper to forage, due to their muscle mass [@mccomb-turbitt2023]. In order to explore whether this ecological phenomenon might be underpinned by morphometric scaling, investigating a potential correlation is an interesting place to start.
 
 #### Hypothesis
 
@@ -108,7 +108,7 @@ To contextualise these hypotheses, under H~0~ (no correlation between body mass 
 
 In order to test my H~0~, I conduct a Pearson's correlation coefficient analysis on two numerical variables included within the Palmer Penguins dataset - body mass (measured in grams), and flipper length (measured in mm).
 
-Pearson's correlation coefficient is a parametric measure of the linear relationship between two numeric variables, which can range from -1 (a perfect negative correlation), to +1 (a perfect positive correlation). It is useful as an introductory point for testing Hypotheses such as mine, because it is a relatively simple statistical measure, that is commonly employed and therefore well-understood .
+Pearson's correlation coefficient is a parametric measure of the linear relationship between two numeric variables, which can range from -1 (a perfect negative correlation), to +1 (a perfect positive correlation). It is useful as an introductory point for testing Hypotheses such as mine, because it is a relatively simple statistical measure, that is commonly employed and therefore well-understood[@hashash2022] .
 
 Pearson's correlation coefficient has precedent for use in investigating potential morphometric scaling. For example, it has previously been used in studying correlations between human brain segregation and integration units [@li2024].
 
@@ -116,15 +116,15 @@ The equation for Pearson's correlation coefficient is given as:
 
 $$r = \Sigma(x_i-\bar x)(y_i-\bar y)/ \sqrt\Sigma(x_i-\bar x)(y_i-\bar y)$$\$\$\$\$
 
-To compare correlations between each species, I bootstrapped the correlation coefficient estimates \[cite a source saying why you did this\]. In order to make this bootstrapping reproducible, I have set a seed in my code.
+To compare correlations between each species, I bootstrapped the correlation coefficient estimates, in order to maximise statistical accuracy [@efron1993]. In order to make this bootstrapping reproducible, I have set a seed in my code.
 
-Pearson's correlation coefficient assumes that data are distributed normally. I have tested this in the [Supplementary Materials]{.underline} section.
+Pearson's correlation coefficient assumes that data are distributed normally [@hashash2022a]. I have tested this in the [Supplementary Materials]{.underline} section.
 
 #### Results
 
-To gain an initial appreciation of the data, but not yet to run any statistical tests, I first created an exploratory figure \[cite why this is important\].
+To gain an initial appreciation of the data, but not yet to run any statistical tests, I first created an exploratory figure. Exploratory figures are important to gain an appreciation for your data, without yet subjecting it to any rigorous testing [@wickham2023].
 
-Here, I generated a y figure to show the distribution of the raw data for my two variables of interest: body mass (g), and flipper length (mm).
+Here, I generated a density figure to show the distribution of the raw data for my two variables of interest: body mass (g), and flipper length (mm).
 
 ```{r}
 #| echo: true
@@ -180,13 +180,15 @@ flipper_length_density <- ggplot(data=penguins_clean, aes(x=flipper_length_mm, g
 grid.arrange(body_mass_density, flipper_length_density, nrow = 2)
 ```
 
-Fig 1a shows body mass (g) on the x-axis, and density \[explain\] on the y-axis. Here, we can perceive overlapping densities of body masses between the 3 species \[explain\]. However, a rough hierarchy emerges with regards to increasing body mass: Gentoo (yellow) \> Chinstrap (teal) \> Adélie (purple).
+Density plots are useful because of their estimate of the probability density function. This produces a smooth curve, from which it is easy to perceive data distribution.
+
+Fig 1a shows body mass (g) on the x-axis, and density (the smoothed distribution of the continuous data) on the y-axis. Here, we can perceive overlapping densities of body masses between the 3 species, illustrating that the penguins exhibit similar overall body masses. However, a rough hierarchy emerges with regards to increasing body mass: Gentoo (yellow) \> Chinstrap (teal) \> Adélie (purple).
 
 Fig 1b recapitulates a similar pattern. Here, we have flipper length (mm) on the x-axis, and density on the y-axis. Despite density overlap, an approximate hierarchy of increasing flipper length of Gentoo \> Chinstrap \> Adélie also emerges.
 
-Hence, according to our exploratory Figure, very similar patterns emerge with regard to the density values for the morphological \[morphometric?\] traits of both body mass and flipper length.
+Hence, according to our exploratory Figure, all 3 species of penguin are morphologically similar with regard to their body mass and flipper length. However, a slight hierarchical patterns emerges.
 
-For reproducibility, it is important that the figures as I have generated them under this current investigation are saved and kept. \[cite?\] They can be found in the "figures" folder of my Reproducible Figures GitHub repository, linked here \[...\]. I give the code for my figure-saving function, which itself is also saved in the "functions" folder of my Reproducible Figures GitHub repository, below.
+For reproducibility, it is important that the figures as I have generated them under this current investigation are saved and kept, for maximum transparency [@schwab2022]. They can be found in the "figures" folder of my Reproducible Figures Project. I give the code for my figure-saving function, which itself is also saved in the "functions" folder of my Reproducible Figures Project, below.
 
 ```{r}
 #| echo: true
@@ -219,6 +221,8 @@ save_figure_png(flipper_length_density,
                 size = 50, res = 500, scaling = 2)
 ```
 
+Having gained a species-specific appreciation for the body mass and flipper length data, we can now ask the question:
+
 *Are the morphological traits of body mass and flipper length characteristics correlated?*
 
 To test this, I conduct a Pearson's correlation coefficient analysis.
@@ -245,7 +249,7 @@ knitr::kable(correlation_data, format = "markdown", digits = 25, caption = "Spec
 
 ```
 
-Here, our table output shows a positive correlation coefficient for each of the 3 species, between body mass and flipper length. Moreover, each of these positive correlations is highly significant under the Pearson's correlation coefficient analysis. This is shown by each of their associated p values being \<0.05, the conventionally utilised alpha significance level \[cite\]\].
+Here, our table output shows a positive correlation coefficient for each of the 3 species, between body mass and flipper length. Moreover, each of these positive correlations is highly significant under the Pearson's correlation coefficient analysis. This is shown by each of their associated p values being \<0.05, the conventionally utilised alpha significance level [@schwab2022].
 
 Correlations are more easily appreciated under visualisation. To facilitate this therefore, I built a scatter plot results figure, displaying the correlation between body mass (g) and flipper length (mm), for each species.
 
@@ -295,21 +299,15 @@ results_figure <- ggplot(penguins_clean, aes(x = body_mass_g, y = flipper_length
 results_figure
 ```
 
-Figure 2 is a scatter plot which shows body mass (g) on the x-axis, and flipper length (mm) on the y-axis. \[cite something which says why using a scatter plot in this instance is useful\].
+Figure 2 is a scatter plot which shows body mass (g) on the x-axis, and flipper length (mm) on the y-axis. Scatter plots are useful because they can facilitate easy perception of correlations between two numerical variables.
 
-Each of the species of penguin demonstrates a positive correlation between these two variables, which can be assessed visually, by use of the species-specific regression lines. \[explain why you used a regression line in this instance\].
+Each of the species of penguin demonstrates a positive correlation between these two variables, which can be assessed visually, by use of the species-specific regression lines. Standard errors surround these regression lines in shaded grey, in order to visually quantify the certainty of the correlation.
 
-Standard errors surround these regression lines in shaded grey, in order to \[...\].
+Notably, a Pearson's correlation coefficient also assumes an approximately linear relationship between variables [@hashash2022b], which can also be verified using the linear regressions applied to this scatter plot. The significant p-values for each species are also annotated onto the plot, for ease of visual appreciation. The Gentoo p-value must be displayed in black as opposed to yellow, for readability.
 
-Notably, a Pearson's correlation coefficient also assumes an approximately linear relationship between variables \[cite\], which can also be verified using this scatter plot.
+Clearly, this results plot exemplifies the positive correlation between body mass and flipper length for all 3 of the penguin species. To link this back to my hypotheses, here we can see that H~0~ (a hypothesis of no correlation between body mass and flipper length for any of the penguins) is statistically disproven, allowing us to reject it. We have evidence that indicates morphometric scaling of body mass and flipper length in these penguin species.
 
-The significant p-values for each species are also annotated onto the plot, for ease of visual appreciation. Notably, the Gentoo p-value must be displayed in black as opposed to yellow, for readability.
-
-Clearly, this results plot exemplifies the positive correlation between body mass and flipper length for all 3 of the penguin species.
-
-\[link back to hypotheses\].
-
-Once again, it is important for maximum reproducibility that there is a saved copy of my generated Figure 2. I save it to the "figures" folder of my GitHub repository using the following code:
+Once again, it is important for maximum reproducibility that there is a saved copy of my generated Figure 2 [@schwab2022a]. I save it to the "figures" folder of my Project using the following code:
 
 ```{r}
 #| echo: true
@@ -324,11 +322,11 @@ save_figure_png(results_figure,
                 size = 30, res = 100, scaling = 1)
 ```
 
-It is clear that there exist positive correlations between body mass (g) and flipper length (mm) for all 3 penguin species. \[maybe mention how the p value for Gentoo is order of magntidue different\].
+It is clear that there exist positive correlations between body mass (g) and flipper length (mm) for all 3 penguin species.
 
 *Do these correlations significantly vary between the species?*
 
-in order to address this question, it is best practice to bootstrap our Pearson's correlation coefficient estimates \[cite\].
+In order to address this question, it is best practice to bootstrap our Pearson's correlation coefficient estimates, to maximise our chances of achieving statistical accuracy [@efron1993a].
 
 ```{r}
 #| echo: true
@@ -360,17 +358,21 @@ bootstrap_results <- penguins_clean %>%
 knitr::kable(bootstrap_results, format = "markdown", digits = 4, caption = "Correlation Coefficients + 95% CIs for Bootstrapped Data")
 ```
 
-The results of this bootstrapping of our Pearson's correlation coefficient estimates shows that all 95% confidence intervals overlap \[why is this important?\].
-
-As such, we can infer that there is no significant difference between the strength of the positive correlation between body mass (g), and flipper length (mm), between these 3 different species of penguin.
+The results of this bootstrapping of our Pearson's correlation coefficient estimates shows that all 95% confidence intervals overlap. As such, we can infer that there is no significant difference between the strength of the positive correlation between body mass (g), and flipper length (mm), between these 3 different species of penguin.
 
 #### Discussion
 
-\[write a small para about the biological significance of each of the data in turn\].
+Initially, I generated an exploratory figure of density plots for both body mass and flipper length, between all 3 species of penguin. It is clear that they display similar body masses and flipper lengths. However, an approximate hierarchy emerges that is recapitulated between both morphological traits, where Gentoos are the largest, Chinstraps are intermediate and Adelies are smallest. The overlapping densities would indicate that this is not significant, and as it is an exploratory figure, no formal statistical analysis was conducted.
+
+Our Pearson's r correlation coefficient analysis outputted a highly significant correlation between body mass and flipper length for each of the 3 species, which is easily visualised using Fig 2. This allows us to reject our H~0~, and is indicative of morphometric scaling between the morphological traits of body mass and flipper length in each of the 3 species.
+
+Finally, we tested whether there was a significant difference in any of the correlations between the 3 species. Due to overlapping 95% confidence intervals of the bootstrapped Pearson's correlation coefficients, we have no evidence to suggest this.
+
+Taking all of this evidence together, we can infer that morphometric scaling does occur between body mass and flipper length for each of these 3 penguin species to a similar degree. As such, this does not support a proposed effect of morphometric scaling enforcing a downstream ecological effect between the species. Perhaps these ecological differences, such as the ability of Gentoo penguins to forage deeper, arise from alternative sources: such as physiological differences. Ultimately, the testing of this hypothesis would require its own data collection and analysis.
 
 #### Conclusion
 
-Relate to a broader context
+The study of allometry, and the correlations that arise due to morphometric scaling is important in biology. Understanding the "patterns of design" that constrain morphology is fundamental to developmental scientists, and the potential ecological repercussions of evolutionary changes in morphometric scaling are exciting. This present study has confirmed evidence of morphometric scaling 3 species of penguin: Gentoo, Chinstrap and Adélie; but no evidence of a change in this scaling between species that would be proposed to have an ecological effect. However, potential studies in other species, or investigating other scaled morphological traits would be able to further plumb this scientific line of inquiry. The application of universal principles of structure and function can link both development and ecological biology in an exciting way, and this is being appreciated in a recent burst of publications investigating such relationships.
 
 #### Supplementary Material
 
