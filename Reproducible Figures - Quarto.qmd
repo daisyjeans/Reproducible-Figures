@@ -4,6 +4,7 @@ format: html
 fig-width: 10
 fig-height: 9
 editor: visual
+biblography: references.bib
 ---
 
 ## ![Adelie Penguin Walking](images/Adelie%20Penguin%20Image.jpeg)
@@ -91,7 +92,9 @@ In my pipeline, having loaded and cleaned my data, I will pose my [questions]{.u
 
 **My question:** is there a correlation between body mass and flipper length in different penguin species' (here: Adélie, Chinstrap and Gentoo)?
 
-\[find someone who has investigated something similar and explain the concept of allometry - maybe go back to the orig suggestion\]
+Correlations between morphological traits (such as body mass and flipper length) are sometimes controlled by morphometric scaling [@shingleton2010]. Morphometrically-scaled correlations are underpinned by the study of allometry: differences in the morphological growth [@nijhout2012]. Allometry is considered interesting fundamentally, but also partly because morphological structure and function can exert a profound effect on an organism's ecology.
+
+I find penguin allometry a specifically interesting case study to run, because of the observed effect of penguin morphology on ecology. For example, we already know that penguins with a larger body mass and flipper length can dive deeper to forage, due to their muscle mass [@mccomb-turbitt2023]. In order to explore whether this ecological phenomenon might be underpinned by morphometric scaling, investigating a potential correlation is an interesting place to start.
 
 #### Hypothesis
 
@@ -99,11 +102,15 @@ In my pipeline, having loaded and cleaned my data, I will pose my [questions]{.u
 
 **My Alternate Hypothesis (H~A~):** there is a correlation between body mass and flipper length in one (or more) of the investigated penguin species'.
 
-\[give a scientific context to these hypotheses\]
+To contextualise these hypotheses, under H~0~ (no correlation between body mass and flipper length) there would be no morphometric scaling between these morphological traits. However, under H~A~, there would be morphometric scaling - thus revealing an interesting allometric facet of penguin development, with potential implications for their ecology.
 
 #### Stats Method
 
-In order to test my H~0~, I aim to conduct a Pearson's correlation coefficient analysis on two numerical variables included within the Palmer Penguins dataset - body mass (measured in grams), and flipper length (measured in mm). \[cite a study which shows doing this is good and why; maybe explain what a correlation actually is\]
+In order to test my H~0~, I conduct a Pearson's correlation coefficient analysis on two numerical variables included within the Palmer Penguins dataset - body mass (measured in grams), and flipper length (measured in mm).
+
+Pearson's correlation coefficient is a parametric measure of the linear relationship between two numeric variables, which can range from -1 (a perfect negative correlation), to +1 (a perfect positive correlation). It is useful as an introductory point for testing Hypotheses such as mine, because it is a relatively simple statistical measure, that is commonly employed and therefore well-understood .
+
+Pearson's correlation coefficient has precedent for use in investigating potential morphometric scaling. For example, it has previously been used in studying correlations between human brain segregation and integration units [@li2024].
 
 The equation for Pearson's correlation coefficient is given as:
 
