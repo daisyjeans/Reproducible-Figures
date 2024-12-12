@@ -33,6 +33,7 @@ library(svglite)
 library(tidyr)
 library(tidyverse)
 library(viridis)
+library(yaml)
 
 #turning the palmer penguins raw data into a csv file: 
 write_csv(penguins_raw, here("data", "penguins_raw.csv")) 
@@ -392,11 +393,4 @@ qqline(penguins_clean$flipper_length_mm, col = "red")
 ### **QUESTION 03: Data Visualisation for Science Communication**
 
 I have uploaded my RProject to GitHub: [Repository Link](https://github.com/daisyjeans/Reproducible-Figures/tree/main "Git")\
-
 N.B. two contributors are noted for this repository: daisyjeans and daisyjeans2. Both contributors are myself.
-
-				
-			
-		
-
-	
