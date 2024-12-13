@@ -146,9 +146,9 @@ div.csl-indent {
 <h2 class="anchored" data-anchor-id="adelie-penguin-walking"><img src="images/Adelie%20Penguin%20Image.jpeg" class="img-fluid" alt="Adelie Penguin Walking"></h2>
 <section id="question-01-data-visualisation-for-science-communication" class="level3">
 <h3 class="anchored" data-anchor-id="question-01-data-visualisation-for-science-communication"><strong>QUESTION 01: Data Visualisation for Science Communication</strong></h3>
-<p>Initially, I will be using the Palmer Penguin dataset to build a misleading graph. This firstly requires appropriate loading and cleaning of the data. My code is as follows:</p>
+<p>Initially, I will be using the <u>Palmer Penguin dataset</u> to build a misleading graph. This firstly requires appropriate loading and cleaning of the data. My code is as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">restore</span>() <span class="co">#stores appropriate versions of libraries downloading </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">restore</span>() <span class="co">#stores appropriate versions of libraries used </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>- The library is already synchronized with the lockfile.</code></pre>
 </div>
@@ -168,26 +168,21 @@ div.csl-indent {
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(yaml)</span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#turning the palmer penguins raw data into a csv file: </span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#turning the palmer penguins raw data into a csv file, and storing it in a folder "data", available in my Project and GitHub Repository: </span></span>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(penguins_raw, <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"penguins_raw.csv"</span>)) </span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#reading in the csv file: </span></span>
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>penguins_raw <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"penguins_raw.csv"</span>))</span>
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">#creating a piped function to clean the penguin data:</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">#creating a piped function to clean the penguin data, available in a folder "functions" in my Project and GitHub repository:</span></span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>cleaning_penguins <span class="ot">&lt;-</span> <span class="cf">function</span>(penguins_raw){</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  penguins_raw <span class="sc">%&gt;%</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">clean_names</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">remove_empty</span>(<span class="fu">c</span>(<span class="st">"rows"</span>, <span class="st">"cols"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">"delta"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="st">"comments"</span>)</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>penguins_clean <span class="ot">&lt;-</span> <span class="fu">cleaning_penguins</span>(penguins_raw) <span class="co">#assign the cleaned data </span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="co">#writing a csv with the new, cleaned data:</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(penguins_clean, <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"penguins_clean.csv"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"functions"</span>, <span class="st">"cleaning.R"</span>))</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">#assign the cleaned data</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>penguins_clean <span class="ot">&lt;-</span> <span class="fu">cleaning_penguins</span>(penguins_raw)  </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co">#writing a csv with the new, cleaned data:</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(penguins_clean, <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"penguins_clean.csv"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>My misleading graph is the following:</p>
 <div class="cell">
@@ -200,17 +195,19 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>In order to make a plot which is correct, but badly communicates the underlying data, I made a series of design choices in the generation process to mislead the reader. I chose to visualise the relationship between culmen length (measured in mm), and body mass (measured in grams). However, the axes titles I used were highly generalised to “Length” and “Mass”, without their units, in order to minimise the possibility of appropriate interpretation. I chose to build a scatter plot - which are generally used to represent a relationship between two continuous variables. However, I gave the title “Does Culmen Length Affect Body Mass in Different Penguin Species”; intimating a causal study, when in fact the visualisation produced is purely correlational. Moreover, I chose to subset the data with regards to Island, as different species of penguin are found on different islands. Specifically, Adelaides are found on all islands, Gentoos only on Biscoe and Chinstraps only on Dream. As such, information about species cannot be divined from visualisations of islands, as is implied by the title. Islands were colour-coded using a very colour-blind unfriendly palette, including simultaneous use of reds and greens. I added a regression line to the plot, with standard errors that are not explained, and therefore very difficult to interpret. With regards to the axes, I reversed Length on the x-axis, in order to mislead a reader on initial assessment into perceiving the correlation as negative when it is actually positive. Finally, I also increased the “jitter” to 20. This added a significant amount of random noise to the plot. Visually spreading out the points extended them past the linear regression, making it even harder to interpret.</p>
+<p>Having data visualised graphically is imperative for data communication, and 91% of respondents in a survey agree that figure use increases reproducibility <span class="citation" data-cites="evanthiakaimaklioti2021">(<a href="#ref-evanthiakaimaklioti2021" role="doc-biblioref">Evanthia Kaimaklioti 2021</a>)</span>. In order to make a plot which is correct, but badly communicates the underlying data, I made a series of design choices in the generation process to mislead the reader. I chose to visualise the relationship between culmen length (measured in mm), and body mass (measured in grams). However, the axes titles I used were highly generalised to “Length” and “Mass”, without their units, in order to minimise the possibility of appropriate interpretation. This is deemed a critical flaw for reproducibility <span class="citation" data-cites="tufte2001">(<a href="#ref-tufte2001" role="doc-biblioref">Tufte 2001</a>)</span>.</p>
+<p>I chose to build a scatter plot - which are generally used to represent a relationship between two continuous variables. However, I gave the title “Does Culmen Length Affect Body Mass in Different Penguin Species’ Islands”; intimating a causal study, when in fact the visualisation produced is purely correlational <span class="citation" data-cites="wickham2023a">(<a href="#ref-wickham2023a" role="doc-biblioref">Wickham 2023a</a>)</span>. I added a regression line to the plot, and there is no annotation on the graph to show whether the slope is significant. With regards to the axes, I reversed Length on the x-axis, in order to mislead a reader on initial assessment into perceiving the correlation as negative when it is actually positive. This is a form of “spatial orientation violation”, which is highly detrimental to reproducibility, as most viewers must make at least two attempts to divine the correct meaning from the graph <span class="citation" data-cites="nguyen2021">(<a href="#ref-nguyen2021" role="doc-biblioref">Nguyen 2021</a>)</span>. I also increased the “jitter” to 20. This added a significant amount of random noise to the plot. Visually spreading out the points extended them past the linear regression, making it even harder to interpret.</p>
+<p>Moreover, I chose to subset the data with regards to Island, as different species of penguin are found on different islands. Specifically, Adelaides are found on all islands, Gentoos only on Biscoe and Chinstraps only on Dream. As such, information about species cannot be divined from visualisations of islands, as is implied by the title. Finally, islands were colour-coded using a very colour-blind unfriendly palette, including simultaneous use of reds and greens.</p>
 </section>
 <section id="question-02-data-pipeline" class="level3">
 <h3 class="anchored" data-anchor-id="question-02-data-pipeline"><strong>QUESTION 02: Data Pipeline</strong></h3>
 <section id="introduction" class="level4">
 <h4 class="anchored" data-anchor-id="introduction">Introduction</h4>
-<p>The Palmer Penguins dataset records observations of foraging Adélie (<em>Pygoscelis adeliae</em>), Chinstrap (<em>Pygoscelis antarcticus</em>) and Gentoo (<em>Pygoscelis papua</em>) penguin species, near the Palmer Station, in the Palmer Archipelago, Antarctica. Recorded observations for each individual notes the specific species, as well as the specific island (of Briscoe, Dream or Torgersen) in the Anvers region; as well as the developmental stage. Each observation is given an ID. Data collected include: clutch completion (either yes or no), the date of egg laying (YYYY-MM-DD), culmen length and depth as well as flipper length (all measured in mm), body mass (measured in grams), and sex (M/F).</p>
+<p>The Palmer Penguins dataset records observations of foraging Adélie (<em>Pygoscelis adeliae</em>), Chinstrap (<em>Pygoscelis antarcticus</em>) and Gentoo (<em>Pygoscelis papua</em>) penguin species, near the Palmer Station, in the Palmer Archipelago, Antarctica. Recorded observations for each individual note the specific species, as well as the specific island (of Briscoe, Dream or Torgersen) in the Anvers region; as well as the developmental stage. Each observation is given an ID. Data collected include: clutch completion (either yes or no), the date of egg laying (YYYY-MM-DD), culmen length and depth as well as flipper length (all measured in mm), body mass (measured in grams), and sex (M/F).</p>
 <p>In my pipeline, having loaded and cleaned my data, I will pose my <u>questions</u> and <u>hypotheses</u>, explain the <u>statistical method</u> I have chosen to adopt for my present analysis, explore and discuss my <u>results</u> (using both an exploratory and a results figure, which I will save<u>)</u>, and ultimately <u>conclude</u> my analysis with reference to its wider relevance.</p>
 <p><strong>My question:</strong> is there a correlation between body mass and flipper length in different penguin species’ (here: Adélie, Chinstrap and Gentoo)?</p>
-<p>Correlations between morphological traits (such as body mass and flipper length) are sometimes controlled by morphometric scaling <span class="citation" data-cites="shingleton2010">(<a href="#ref-shingleton2010" role="doc-biblioref">Shingleton 2010</a>)</span>. Morphometrically-scaled correlations are underpinned by the study of allometry: differences in the morphological growth <span class="citation" data-cites="nijhout2012">(<a href="#ref-nijhout2012" role="doc-biblioref">Nijhout 2012</a>)</span>. Allometry is considered interesting fundamentally, but also partly because morphological structure and function can exert a profound effect on an organism’s ecology.</p>
-<p>I find penguin allometry a specifically interesting case study to run, because of the observed effect of penguin morphology on ecology. For example, we already know that penguins with a larger body mass and flipper length can dive deeper to forage, due to their muscle mass <span class="citation" data-cites="mccomb-turbitt2023">(<a href="#ref-mccomb-turbitt2023" role="doc-biblioref">McComb-Turbitt 2023</a>)</span>. In order to explore whether this ecological phenomenon might be underpinned by morphometric scaling, investigating a potential correlation is an interesting place to start.</p>
+<p>Correlations between morphological traits (such as body mass and flipper length) are sometimes controlled by morphometric scaling <span class="citation" data-cites="shingleton2010">(<a href="#ref-shingleton2010" role="doc-biblioref">Shingleton 2010</a>)</span>. Morphometrically-scaled correlations are underpinned by the study of allometry: differences in the morphological growth <span class="citation" data-cites="nijhout2012">(<a href="#ref-nijhout2012" role="doc-biblioref">Nijhout 2012</a>)</span>. Allometry is a topic of current interest fundamentally, but also partly because morphological structure and function can exert a profound effect on an organism’s ecology.</p>
+<p>I find penguin allometry a specifically interesting case study to run, because of the proposed effect of penguin morphology on ecology, arising from morphometric scaling. For example, we already know that Gentoo penguins, with a larger body mass and flipper length, can dive deeper to forage; due to their muscle mass <span class="citation" data-cites="mccomb-turbitt2023">(<a href="#ref-mccomb-turbitt2023" role="doc-biblioref">McComb-Turbitt 2023</a>)</span>. In order to explore whether this ecological phenomenon might be underpinned by morphometric scaling, investigating a potential correlation is an interesting place to start.</p>
 </section>
 <section id="hypothesis" class="level4">
 <h4 class="anchored" data-anchor-id="hypothesis">Hypothesis</h4>
@@ -221,16 +218,16 @@ div.csl-indent {
 <section id="stats-method" class="level4">
 <h4 class="anchored" data-anchor-id="stats-method">Stats Method</h4>
 <p>In order to test my H<sub>0</sub>, I conduct a Pearson’s correlation coefficient analysis on two numerical variables included within the Palmer Penguins dataset - body mass (measured in grams), and flipper length (measured in mm).</p>
-<p>Pearson’s correlation coefficient is a parametric measure of the linear relationship between two numeric variables, which can range from -1 (a perfect negative correlation), to +1 (a perfect positive correlation). It is useful as an introductory point for testing Hypotheses such as mine, because it is a relatively simple statistical measure, that is commonly employed and therefore well-understood<span class="citation" data-cites="hashash2022">(<a href="#ref-hashash2022" role="doc-biblioref">Hashash 2022a</a>)</span> .</p>
+<p>Pearson’s correlation coefficient is a parametric measure of the linear relationship between two numeric variables, which can range from -1 (a perfect negative correlation), to +1 (a perfect positive correlation). It is useful as an introductory point for testing Hypotheses such as mine because it is a relatively simple statistical measure that is commonly employed, and therefore well-understood <span class="citation" data-cites="hashash2022">(<a href="#ref-hashash2022" role="doc-biblioref">Hashash 2022a</a>)</span>.</p>
 <p>Pearson’s correlation coefficient has precedent for use in investigating potential morphometric scaling. For example, it has previously been used in studying correlations between human brain segregation and integration units <span class="citation" data-cites="li2024">(<a href="#ref-li2024" role="doc-biblioref">Li 2024</a>)</span>.</p>
 <p>The equation for Pearson’s correlation coefficient is given as:</p>
 <p><span class="math display">\[r = \Sigma(x_i-\bar x)(y_i-\bar y)/ \sqrt\Sigma(x_i-\bar x)(y_i-\bar y)\]</span>$$$$</p>
-<p>To compare correlations between each species, I bootstrapped the correlation coefficient estimates, in order to maximise statistical accuracy <span class="citation" data-cites="efron1993">(<a href="#ref-efron1993" role="doc-biblioref">Efron 1993</a>)</span>. In order to make this bootstrapping reproducible, I have set a seed in my code.</p>
-<p>Pearson’s correlation coefficient assumes that data are distributed normally <span class="citation" data-cites="hashash2022a">(<a href="#ref-hashash2022a" role="doc-biblioref">Hashash 2022b</a>)</span>. I have tested this in the <u>Supplementary Materials</u> section.</p>
+<p>To compare correlations between each species, I bootstrap the correlation coefficient estimates, in order to maximise statistical accuracy <span class="citation" data-cites="efron1993">(<a href="#ref-efron1993" role="doc-biblioref">Efron 1993a</a>)</span>. In order to make this bootstrapping reproducible, I have set a seed in my code.</p>
+<p>Pearson’s correlation coefficient assumes that data are approximately linear. This can be visually assessed using my results figure. Moreover, Pearson’s correlation coefficient assumes that data are distributed normally <span class="citation" data-cites="hashash2022a">(<a href="#ref-hashash2022a" role="doc-biblioref">Hashash 2022b</a>)</span>. I have tested this in the <u>Supplementary Materials</u> section, to validate it as an appropriate statistical method for this dataset.</p>
 </section>
 <section id="results" class="level4">
 <h4 class="anchored" data-anchor-id="results">Results</h4>
-<p>To gain an initial appreciation of the data, but not yet to run any statistical tests, I first created an exploratory figure. Exploratory figures are important to gain an appreciation for your data, without yet subjecting it to any rigorous testing <span class="citation" data-cites="wickham2023">(<a href="#ref-wickham2023" role="doc-biblioref">Wickham 2023</a>)</span>.</p>
+<p>To gain an initial appreciation of the data, but not yet to run any statistical tests, I first created an exploratory figure. Exploratory figures are important to gain an appreciation for your data, without yet subjecting them to any rigorous testing <span class="citation" data-cites="wickham2023">(<a href="#ref-wickham2023" role="doc-biblioref">Wickham 2023b</a>)</span>.</p>
 <p>Here, I generated a density figure to show the distribution of the raw data for my two variables of interest: body mass (g), and flipper length (mm).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">##Firstly, I create a density plot of body masses by species </span></span>
@@ -287,32 +284,21 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>Density plots are useful because […]</p>
+<p>Density plots are useful because of their estimate of the probability density function. This produces a smooth curve, from which it is easy to perceive data distribution.</p>
 <p>Fig 1a shows body mass (g) on the x-axis, and density (the smoothed distribution of the continuous data) on the y-axis. Here, we can perceive overlapping densities of body masses between the 3 species, illustrating that the penguins exhibit similar overall body masses. However, a rough hierarchy emerges with regards to increasing body mass: Gentoo (yellow) &gt; Chinstrap (teal) &gt; Adélie (purple).</p>
 <p>Fig 1b recapitulates a similar pattern. Here, we have flipper length (mm) on the x-axis, and density on the y-axis. Despite density overlap, an approximate hierarchy of increasing flipper length of Gentoo &gt; Chinstrap &gt; Adélie also emerges.</p>
-<p>Hence, according to our exploratory Figure, very similar patterns emerge with regard to the density values for the morphological traits of both body mass and flipper length.</p>
-<p>For reproducibility, it is important that the figures as I have generated them under this current investigation are saved and kept. [cite?] They can be found in the “figures” folder of my Reproducible Figures GitHub repository. I give the code for my figure-saving function, which itself is also saved in the “functions” folder of my Reproducible Figures GitHub repository, below.</p>
+<p>Hence, according to our exploratory Figure, all 3 species of penguin are morphologically similar with regard to their body mass and flipper length. However, a slight hierarchical pattern emerges.</p>
+<p>For reproducibility, it is important that the figures as I have generated them under this current investigation are saved and kept, for maximum transparency <span class="citation" data-cites="schwab2022">(<a href="#ref-schwab2022" role="doc-biblioref">Schwab 2022a</a>)</span>. They can be found in the “figures” folder of my Reproducible Figures Project, and in my GitHub repository, here: <a href="https://github.com/daisyjeans/Reproducible-Figures/tree/main" title="[click here]">Reproducible Figures GitHub Repository</a>. I give the code for my figure-saving function, which itself is also saved in the “functions” folder of my Reproducible Figures Project and GitHub Repository, below:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## In order to save this figure, I create another function: </span></span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## In order to save this figure, I create another function, available in the "functions" folder of my Project, and in my GitHub Repository: </span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>save_figure_png <span class="ot">&lt;-</span> <span class="cf">function</span>(plot_object,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                        filename, size, res, scaling) {</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">agg_png</span>(filename, </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">width =</span> size, </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">height =</span> size, </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">units =</span> <span class="st">"cm"</span>, </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">res =</span> res, </span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">scaling =</span> scaling</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>          )</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(plot_object)</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dev.off</span>()</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Then call this function with regard to the exploratory figure:</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="fu">save_figure_png</span>(body_mass_density,</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>                <span class="fu">here</span>(<span class="st">"figures"</span>, <span class="st">"Figure1_body_mass_density_plot.png"</span>), </span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> <span class="dv">50</span>, <span class="at">res =</span> <span class="dv">500</span>, <span class="at">scaling =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"functions"</span>, <span class="st">"saving_figures.R"</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Then call this function with regard to the exploratory figure:</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">save_figure_png</span>(body_mass_density,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                <span class="fu">here</span>(<span class="st">"figures"</span>, <span class="st">"Figure1_body_mass_density_plot.png"</span>), </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> <span class="dv">50</span>, <span class="at">res =</span> <span class="dv">500</span>, <span class="at">scaling =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>quartz_off_screen 
                 2 </code></pre>
@@ -325,7 +311,8 @@ div.csl-indent {
                 2 </code></pre>
 </div>
 </div>
-<p><em>Are the morphological traits of body mass and flipper length characteristics correlated?</em></p>
+<p>Having gained a species-specific appreciation for the body mass and flipper length data, we can now ask the question:</p>
+<p><em>Are the morphological traits of body mass and flipper length correlated?</em></p>
 <p>To test this, I conduct a Pearson’s correlation coefficient analysis.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Firstly, I extract the correlation coefficient and associated p-values from the cleaned penguin data, subset by species</span></span>
@@ -333,16 +320,16 @@ div.csl-indent {
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>correlation_data <span class="ot">&lt;-</span> penguins_clean <span class="sc">%&gt;%</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">correlation_coefficient =</span> <span class="fu">cor</span>(body_mass_g, flipper_length_mm, <span class="at">use =</span> <span class="st">"complete.obs"</span>), <span class="co">#removed any rows with NA, which would prevent a correlation calculation</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">correlation_coefficient =</span> <span class="fu">cor</span>(body_mass_g, flipper_length_mm, <span class="at">use =</span> <span class="st">"complete.obs"</span>), <span class="co">#removed any rows with NA, which would prevent the correlation calculation</span></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_value =</span> <span class="fu">cor.test</span>(body_mass_g, flipper_length_mm)<span class="sc">$</span>p.value) <span class="sc">%&gt;%</span></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>   <span class="fu">as.data.frame</span>() <span class="co">#organise as a table</span></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Then, I use the knitr package to create a more readable table. This requires 25 digits to display a comparative p-value for Gentoo; it being so small. I add a title, for further readability. </span></span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(correlation_data, <span class="at">format =</span> <span class="st">"markdown"</span>, <span class="at">digits =</span> <span class="dv">25</span>, <span class="at">caption =</span> <span class="st">"Species correlation coefficients and associated p-values"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(correlation_data, <span class="at">format =</span> <span class="st">"markdown"</span>, <span class="at">digits =</span> <span class="dv">25</span>, <span class="at">caption =</span> <span class="st">"Species Correlation Coefficients and Associated p-values"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
-<caption>Species correlation coefficients and associated p-values</caption>
+<caption>Species Correlation Coefficients and Associated p-values</caption>
 <colgroup>
 <col style="width: 53%">
 <col style="width: 30%">
@@ -376,24 +363,24 @@ div.csl-indent {
 <p>Correlation Test</p>
 </div>
 </div>
-<p>Here, our table output shows a positive correlation coefficient for each of the 3 species, between body mass and flipper length. Moreover, each of these positive correlations is highly significant under the Pearson’s correlation coefficient analysis. This is shown by each of their associated p values being &lt;0.05, the conventionally utilised alpha significance level [cite]].</p>
+<p>Here, our table output shows a positive correlation coefficient for each of the 3 species, between body mass and flipper length. Moreover, each of these positive correlations is highly significant under the Pearson’s correlation coefficient analysis. This is shown by each of their associated p values being &lt;0.05, the conventionally utilised alpha significance level <span class="citation" data-cites="schwab2022">(<a href="#ref-schwab2022" role="doc-biblioref">Schwab 2022a</a>)</span>.</p>
 <p>Correlations are more easily appreciated under visualisation. To facilitate this therefore, I built a scatter plot results figure, displaying the correlation between body mass (g) and flipper length (mm), for each species.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## To create my Results Figure, I will generate a triplet scatterplot of flipper length against body mass by species, show the linear correlation with a regression line and standard error, and print the significant p-values atop this. </span></span>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## To create my Results Figure, I will generate a scatterplot of flipper length against body mass by species, showing the linear correlation with a regression line and 95% CIs for each species, and print the significant p-values atop this. </span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>results_figure <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(penguins_clean, <span class="fu">aes</span>(<span class="at">x =</span> body_mass_g, <span class="at">y =</span> flipper_length_mm, <span class="at">color =</span> species, <span class="at">shape =</span> species)) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>results_figure <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(penguins_clean, <span class="fu">aes</span>(<span class="at">x =</span> body_mass_g, <span class="at">y =</span> flipper_length_mm, <span class="at">color =</span> species)) <span class="sc">+</span> </span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">2.5</span>, <span class="at">alpha =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>) <span class="sc">+</span>  <span class="co"># Removed the `fill` aesthetic</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>) <span class="sc">+</span>  </span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Fig 2 | Scatter Graph of Flipper Length Against Body Mass, Colored by Species"</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Fig 2 | Scatter Graph of Flipper Length Against Body Mass, Coloured by Species"</span>,</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Body Mass (g)"</span>,</span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Flipper Length (mm)"</span>,</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Species"</span></span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">2500</span>, <span class="dv">6500</span>)) <span class="sc">+</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">160</span>, <span class="dv">240</span>)) <span class="sc">+</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">2500</span>, <span class="dv">6500</span>)) <span class="sc">+</span> <span class="co">#set the limits of the x axis, for readability</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">160</span>, <span class="dv">240</span>)) <span class="sc">+</span> <span class="co">#ditto for the y axis</span></span>
 <span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">18</span>, <span class="at">family =</span> <span class="st">"Times New Roman"</span>),</span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">17</span>, <span class="at">family =</span> <span class="st">"Times New Roman"</span>),</span>
@@ -403,7 +390,7 @@ div.csl-indent {
 <span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.direction =</span> <span class="st">"horizontal"</span>,</span>
 <span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>, <span class="at">family =</span> <span class="st">"Times New Roman"</span>),</span>
 <span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">family =</span> <span class="st">"Times New Roman"</span>)</span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> <span class="co">#the following code pastes on our species-specific p-values, in an appropriate place on the graph, for interpret- and readability </span></span>
 <span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="dv">5500</span>, <span class="at">y =</span> <span class="dv">190</span>, </span>
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste</span>(<span class="st">"Adelie: p ="</span>, <span class="fu">format</span>(correlation_data<span class="sc">$</span>p_value[<span class="dv">1</span>], <span class="at">scientific =</span> <span class="cn">TRUE</span>)),</span>
 <span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">4</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">colour =</span> <span class="st">"purple"</span>) <span class="sc">+</span></span>
@@ -414,7 +401,7 @@ div.csl-indent {
 <span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste</span>(<span class="st">"Gentoo: p ="</span>, <span class="fu">format</span>(correlation_data<span class="sc">$</span>p_value[<span class="dv">3</span>], <span class="at">scientific =</span> <span class="cn">TRUE</span>)),</span>
 <span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">4</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">colour =</span> <span class="st">"black"</span>)</span>
 <span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="co">#finally, paste the figure</span></span>
 <span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>results_figure</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -425,14 +412,11 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>Figure 2 is a scatter plot which shows body mass (g) on the x-axis, and flipper length (mm) on the y-axis. [cite something which says why using a scatter plot in this instance is useful].</p>
-<p>Each of the species of penguin demonstrates a positive correlation between these two variables, which can be assessed visually, by use of the species-specific regression lines. [explain why you used a regression line in this instance].</p>
-<p>Standard errors surround these regression lines in shaded grey, in order to […].</p>
-<p>Notably, a Pearson’s correlation coefficient also assumes an approximately linear relationship between variables [cite], which can also be verified using this scatter plot.</p>
-<p>The significant p-values for each species are also annotated onto the plot, for ease of visual appreciation. Notably, the Gentoo p-value must be displayed in black as opposed to yellow, for readability.</p>
-<p>Clearly, this results plot exemplifies the positive correlation between body mass and flipper length for all 3 of the penguin species.</p>
-<p>[link back to hypotheses].</p>
-<p>Once again, it is important for maximum reproducibility that there is a saved copy of my generated Figure 2. I save it to the “figures” folder of my GitHub repository using the following code:</p>
+<p>Figure 2 is a scatter plot which shows body mass (g) on the x-axis, and flipper length (mm) on the y-axis. Each species is colour co-ordinated such that purple shows Adélie penguins, blue shows Chinstrap penguins, and yellow shows Gentoo penguins. Scatter plots are useful because they can facilitate easy perception of correlations between two numerical variables.</p>
+<p>Each of the species of penguin demonstrates a positive correlation between these two variables, which can be assessed visually, by use of the species-specific regression lines. 95% confidence intervals (CIs) surround these regression lines in shaded grey, in order to visually quantify the certainty of the correlation. Here, the certainty is high.</p>
+<p>Notably, a Pearson’s correlation coefficient also assumes an approximately linear relationship between variables <span class="citation" data-cites="hashash2022b">(<a href="#ref-hashash2022b" role="doc-biblioref">Hashash 2022c</a>)</span>, which can be verified using the linear regressions applied to this scatter plot. The significant p-values for each species are annotated onto the plot, for ease of visual appreciation. The Gentoo p-value must be displayed in black as opposed to yellow, for readability.</p>
+<p>Clearly, this results plot exemplifies the positive correlation between body mass and flipper length for all 3 of the penguin species. To link this back to my hypotheses, here we can see that H<sub>0</sub> (a hypothesis of no correlation between body mass and flipper length for any of the penguins) is statistically disproven, allowing us to reject it. We have evidence that indicates morphometric scaling of body mass and flipper length in these penguin species.</p>
+<p>Once again, it is important for maximum reproducibility that there is a saved copy of my generated Figure 2 <span class="citation" data-cites="schwab2022a">(<a href="#ref-schwab2022a" role="doc-biblioref">Schwab 2022b</a>)</span>. I save it to the “figures” folder of my Project using the following code. It can also be found in my <a href="https://github.com/daisyjeans/Reproducible-Figures/tree/main" title="[click again]">Reproducible Figures GitHub Repository</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## I reuse the previously made function to save the results figure: </span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -444,31 +428,29 @@ div.csl-indent {
                 2 </code></pre>
 </div>
 </div>
-<p>It is clear that there exist positive correlations between body mass (g) and flipper length (mm) for all 3 penguin species. [maybe mention how the p value for Gentoo is order of magntidue different].</p>
+<p>It is clear that there exist positive correlations between body mass (g) and flipper length (mm) for all 3 penguin species.</p>
 <p><em>Do these correlations significantly vary between the species?</em></p>
-<p>in order to address this question, it is best practice to bootstrap our Pearson’s correlation coefficient estimates [cite].</p>
+<p>In order to address this question, it is best practice to bootstrap our Pearson’s correlation coefficient estimates, to maximise our chances of achieving statistical accuracy <span class="citation" data-cites="efron1993a">(<a href="#ref-efron1993a" role="doc-biblioref">Efron 1993b</a>)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## For my boostrapped correlation test, I first define a function, which is saved in the functions folder, for ease of access. </span></span>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## For my boostrapped correlation test, I first define a function, which is saved in the functions folder of my Project and GitHub Repository, for ease of access. </span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>correlation_function <span class="ot">&lt;-</span> <span class="cf">function</span>(data, indices) {</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  resampled_data <span class="ot">&lt;-</span> data[indices, ]</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>(resampled_data<span class="sc">$</span>body_mass_g, resampled_data<span class="sc">$</span>flipper_length_mm, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>} <span class="co">#any rows with NA are not taken into consideration, as this would prevent the calculation of a correlation </span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Next, I run the bootstrapping for each species using this function. I set a seed to ensure reproducibility. </span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>bootstrap_results <span class="ot">&lt;-</span> penguins_clean <span class="sc">%&gt;%</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">do</span>({</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set.seed</span>(<span class="dv">2963</span>)</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    res <span class="ot">&lt;-</span> <span class="fu">boot</span>(<span class="at">data =</span> ., <span class="at">statistic =</span> correlation_function, <span class="at">R =</span> <span class="dv">1000</span>) <span class="co">#repeated 1000 times, according to convention from the literature (cited below)</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    ci_lower <span class="ot">&lt;-</span> <span class="fu">quantile</span>(res<span class="sc">$</span>t, <span class="fl">0.025</span>) <span class="co">#calculating the lower bound of the 95% confidence interval</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    ci_upper <span class="ot">&lt;-</span> <span class="fu">quantile</span>(res<span class="sc">$</span>t, <span class="fl">0.975</span>) <span class="co">#calculating the upper bound of the 95% confidence interval</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">correlation =</span> <span class="fu">mean</span>(res<span class="sc">$</span>t), <span class="at">ci_lower =</span> ci_lower, <span class="at">ci_upper =</span> ci_upper)</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  }) <span class="co">#outputting the result as a table</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Building a nicer looking table, for readibility. 4dp again chosen for scientific precision. Appropriate title given. </span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(bootstrap_results, <span class="at">format =</span> <span class="st">"markdown"</span>, <span class="at">digits =</span> <span class="dv">4</span>, <span class="at">caption =</span> <span class="st">"Correlation Coefficients + 95% CIs for Bootstrapped Data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"functions"</span>, <span class="st">"bootstrapping.R"</span>))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Next, I run the bootstrapping for each species using this function. I set a seed to ensure reproducibility. </span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>bootstrap_results <span class="ot">&lt;-</span> penguins_clean <span class="sc">%&gt;%</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">do</span>({</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set.seed</span>(<span class="dv">2963</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    res <span class="ot">&lt;-</span> <span class="fu">boot</span>(<span class="at">data =</span> ., <span class="at">statistic =</span> correlation_function, <span class="at">R =</span> <span class="dv">1000</span>) <span class="co">#repeated 1000 times, according to convention from the literature</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    ci_lower <span class="ot">&lt;-</span> <span class="fu">quantile</span>(res<span class="sc">$</span>t, <span class="fl">0.025</span>) <span class="co">#calculating the lower bound of the 95% CI</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    ci_upper <span class="ot">&lt;-</span> <span class="fu">quantile</span>(res<span class="sc">$</span>t, <span class="fl">0.975</span>) <span class="co">#calculating the upper bound of the 95% CI</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">correlation =</span> <span class="fu">mean</span>(res<span class="sc">$</span>t), <span class="at">ci_lower =</span> ci_lower, <span class="at">ci_upper =</span> ci_upper)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  }) <span class="co">#outputting the result as a table</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Building a nicer looking table, for readibility. 4dp again chosen for scientific precision. Appropriate title given. </span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(bootstrap_results, <span class="at">format =</span> <span class="st">"markdown"</span>, <span class="at">digits =</span> <span class="dv">4</span>, <span class="at">caption =</span> <span class="st">"Correlation Coefficients + 95% CIs for Bootstrapped Data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <caption>Correlation Coefficients + 95% CIs for Bootstrapped Data</caption>
@@ -510,16 +492,18 @@ div.csl-indent {
 <p>Bootstrapped Correlation Test</p>
 </div>
 </div>
-<p>The results of this bootstrapping of our Pearson’s correlation coefficient estimates shows that all 95% confidence intervals overlap [why is this important?].</p>
-<p>As such, we can infer that there is no significant difference between the strength of the positive correlation between body mass (g), and flipper length (mm), between these 3 different species of penguin.</p>
+<p>The results of this bootstrapping of our Pearson’s correlation coefficient estimates show that all 95% CIs overlap between species. As such, we can infer that there is no significant difference in the strength of the positive correlation between body mass (g), and flipper length (mm), across these 3 different species of penguin.</p>
 </section>
 <section id="discussion" class="level4">
 <h4 class="anchored" data-anchor-id="discussion">Discussion</h4>
-<p>[write a small para about the biological significance of each of the data in turn].</p>
+<p>Initially, I generated an exploratory figure of density plots for both body mass and flipper length, between all 3 species of penguin. It is clear that they display similar body masses and flipper lengths. However, an approximate hierarchy emerges that is recapitulated between both morphological traits, where Gentoos are the largest, Chinstraps are intermediate and Adélies are smallest. The overlapping densities would indicate that this is not significant, and as it is an exploratory figure, no formal statistical analysis was conducted.</p>
+<p>Our Pearson’s correlation coefficient analysis outputted a highly significant correlation between body mass and flipper length for each of the 3 species, which is easily visualised using Fig 2. This allows us to reject our H<sub>0</sub>, and is indicative of morphometric scaling between the morphological traits of body mass and flipper length in each of the 3 species.</p>
+<p>Finally, we tested whether there was a significant difference in the strength of any of the correlations between the 3 species. Due to overlapping 95% confidence intervals of the bootstrapped Pearson’s correlation coefficients, we have no evidence to suggest this.</p>
+<p>Taking all of this evidence together, we can infer that morphometric scaling does occur between body mass and flipper length for each of these 3 penguin species, and to a similar degree. As such, this does not support the proposition that morphometric scaling affects the ecology of these species’. Perhaps the ecological differences we observe, such as the ability of Gentoo penguins to forage deeper, arise from alternative sources: such as physiological differences. The testing of this hypothesis would require its own data collection and analysis.</p>
 </section>
 <section id="conclusion" class="level4">
 <h4 class="anchored" data-anchor-id="conclusion">Conclusion</h4>
-<p>Relate to a broader context</p>
+<p>The study of allometry, and the correlations that arise due to morphometric scaling, is highly important in biological science. Understanding the “patterns of design” that constrain morphology is fundamental to developmental scientists, and the potential ecological repercussions of evolutionary changes in morphometric scaling are exciting <span class="citation" data-cites="shingleton2010">(<a href="#ref-shingleton2010" role="doc-biblioref">Shingleton 2010</a>)</span>. This present study has confirmed evidence of morphometric scaling 3 species of penguin: Gentoo, Chinstrap and Adélie; but finds no evidence of a change in this scaling between species that could be proposed to have an ecological effect. Potential studies in other species, or investigating other scaled morphological traits, would further plumb this scientific line of inquiry. The application of universal principles of structure and function can link both development and ecological biology in an exciting way, and this is being appreciated in a recent burst of publications investigating such relationships <span class="citation" data-cites="shingleton2010">(<a href="#ref-shingleton2010" role="doc-biblioref">Shingleton 2010</a>)</span>.</p>
 </section>
 <section id="supplementary-material" class="level4">
 <h4 class="anchored" data-anchor-id="supplementary-material">Supplementary Material</h4>
@@ -536,37 +520,120 @@ Pearson’s Correlation Coefficient requires data to be normal
 
 </div>
 </div>
+<p>This can be tested using visual assessment of QuantileQuantile (QQ) Plots.</p>
+<p>QQ plots compare the quantiles of the data in our sample (on the y-axis) to the theoretical quantiles of a normal distribution (on the x-axis), in order to investigate the extent to which these align. Complete alignment would indicate totally normal data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## In order to appropriately apply a Pearson's r correlation coefficient, the data must be normal. I check this using a QQ-Plot. </span></span>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## In order to appropriately apply a Pearson's correlation coefficient, the data must be normal. I check this using a QQ Plot. </span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#the initial qq-plot to test the normality of the body mass data, given an appropriate title, and summarised in red by convention </span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#the initial QQ plot to test the normality of the body mass data, given an appropriate title, and summarised in red by convention </span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(penguins_clean<span class="sc">$</span>body_mass_g, <span class="at">main =</span> <span class="st">"QQ Plot for Body Mass (g)"</span>)</span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(penguins_clean<span class="sc">$</span>body_mass_g, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Reproducible-Figures---Quarto_files/figure-html/normality%20testing-1.png" class="img-fluid" width="960"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Reproducible-Figures---Quarto_files/figure-html/normality%20testing-1.png" class="img-fluid figure-img" width="960"></p>
+<p></p><figcaption class="figure-caption">QQ plots for testing normality</figcaption><p></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Next, I test the normality of the flipper data, using the same format. </span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(penguins_clean<span class="sc">$</span>flipper_length_mm, <span class="at">main =</span> <span class="st">"QQ Plot for Flipper Length (mm)"</span>)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(penguins_clean<span class="sc">$</span>flipper_length_mm, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Reproducible-Figures---Quarto_files/figure-html/normality%20testing-2.png" class="img-fluid" width="960"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Reproducible-Figures---Quarto_files/figure-html/normality%20testing-2.png" class="img-fluid figure-img" width="960"></p>
+<p></p><figcaption class="figure-caption">QQ plots for testing normality</figcaption><p></p>
+</figure>
 </div>
 </div>
+</div>
+<p>Both of our QQ Plots align relatively well with normality. Both show slight deviation at the extremes, known as kurtosis. However, this kurtosis is not extreme enough to invalidate the use of the Pearson’s correlation coefficient for this dataset. It is therefore deemed appropriate.</p>
 </section>
 </section>
 <section id="question-03-data-visualisation-for-science-communication" class="level3">
 <h3 class="anchored" data-anchor-id="question-03-data-visualisation-for-science-communication"><strong>QUESTION 03: Data Visualisation for Science Communication</strong></h3>
+<section id="part-a" class="level4">
+<h4 class="anchored" data-anchor-id="part-a">Part a)</h4>
 <p>I have uploaded my RProject to GitHub: <a href="https://github.com/daisyjeans/Reproducible-Figures/tree/main" title="Git">Repository Link</a><br>
 N.B. two contributors are noted for this repository: daisyjeans and daisyjeans2. Both contributors are myself.</p>
+</section>
+<section id="part-b" class="level4">
+<h4 class="anchored" data-anchor-id="part-b">Part b)</h4>
+<p>Partner’s GitHub link: <a href="https://github.com/ZigiButtercup/PenguinsAssignment36" title="click x3">Partner’s GitHub Link</a></p>
+</section>
+<section id="part-c" class="level4">
+<h4 class="anchored" data-anchor-id="part-c">Part c)</h4>
+<section id="what-elements-of-your-partners-code-helped-you-to-understand-their-data-pipeline" class="level5">
+<h5 class="anchored" data-anchor-id="what-elements-of-your-partners-code-helped-you-to-understand-their-data-pipeline"><em>What elements of your partner's code helped you to understand their data pipeline?</em>&nbsp;</h5>
+<p><strong>My partner's code frequently used annotations excellently.</strong> &nbsp;</p>
+<p>For example, annotations were sometimes used directly above code, in order to "introduce" it. When reading the code, this means that I did not have to puzzle over what it meant, as I was reading the code already having an idea of what it was going to do.&nbsp;&nbsp;</p>
+<p>Annotations were also occasionally used within the code, to explain small inclusions (such as which =2). This extra detail made me, a person unfamiliar with that specific coding sequence, understand it better.&nbsp;&nbsp;</p>
+<p>Occasionally, small paragraphs of annotation were also used, which were excellent at moments of transition in the data pipeline, keeping me fully up to date on the trajectory of the code.&nbsp;&nbsp;</p>
+<p>Annotations was also implemented to explain both the statistical input, and the data output, which I thought was a nice touch. For example, explaining what a QQ plot is, just in case the reader was not aware. Moreover, explaining an outputted histogram skew, to keep me following the trajectory of the pipeline.&nbsp;&nbsp;</p>
+<p>Annotations also explained the choices of the coder, which I thought was excellent added detail. For example, they refer to the coding decisions they have made to maximise reproducibility, which is highly informative, and reassuring.&nbsp;&nbsp;</p>
+<p><strong>My partner's code had excellent use of functions.</strong> &nbsp;</p>
+<p>For example, their function to clean the data was appropriately named ("penguins_clean"), and stored in a "functions" folder, such that it could be easily accessed in their Project and GitHub repository. It was also referenced in their detailed read.me file in their GitHub Repository, so I knew where to find it.</p>
+<p><strong>My partner's code was highly organised.</strong> &nbsp;</p>
+<p>The generating of folders such as the aforementioned "functions", and also a "data" folder where the original data could be preserved as a read-only file. This is excellent from a reproducibility perspective. A folder was also created for "figures", which is highly beneficial from a reproducibility perspective, too.&nbsp;&nbsp;</p>
+<p><strong>My partner's code was, for the most part, highly reproducible.</strong> &nbsp;</p>
+<p>They used the here() path to avoid setting a working directory, which meant I was less likely to suffer errors in using their data.&nbsp;&nbsp;</p>
+<p><strong>My partner’s code used objects well.</strong> &nbsp;</p>
+<p>The naming of objects were frequently very apt. For example, the name of the object gentoo_dataset, when specifying to just one species, was very sensible, and clearly explained at this transition. Another example is gentoo_lm_unlogged; the use of "unlogged" was wise, as having both logged and unlogged data at this point in the pipeline necessitated extra specificity, to maximise clarity.&nbsp;&nbsp;</p>
+</section>
+<section id="did-it-run-did-you-need-to-fix-anything" class="level5">
+<h5 class="anchored" data-anchor-id="did-it-run-did-you-need-to-fix-anything"><em>Did it run? Did you need to fix anything?</em>&nbsp;</h5>
+<p>My partner's code ran fine, and I did not need to fix anything.&nbsp;&nbsp;</p>
+</section>
+<section id="what-suggestions-would-you-make-for-improving-their-code-to-make-it-more-understandable-or-reproducible-and-why" class="level5">
+<h5 class="anchored" data-anchor-id="what-suggestions-would-you-make-for-improving-their-code-to-make-it-more-understandable-or-reproducible-and-why"><em>What suggestions would you make for improving their code to make it more understandable or reproducible, and why?</em>&nbsp;&nbsp;</h5>
+<p><strong>Improving annotations:</strong>&nbsp;</p>
+<p>In my opinion, some extra annotations would have been helpful, to thoroughly guide me through the code. For example, the initial library loading section is not annotated.&nbsp;&nbsp;</p>
+<p>Abbreviations were also occasionally used, which could potentially lead to confusion. An example is "homo" instead of "homoscedasticity".&nbsp;&nbsp;</p>
+<p><strong>Object naming:</strong> &nbsp;</p>
+<p>There were two objects whose names I felt could have been more specific to their use. The first was gentoo_explorplot (explor is abbreviated, and therefore potentially confusing). The second was gentoo_resultsplot; although this is indeed generating a results plot, I felt it would have been clearly to label it with the direct plot being produced: a scatter graph.&nbsp;&nbsp;</p>
+<p><strong>Redundant code:</strong>&nbsp;</p>
+<p>Occasionally code was repeated, such as colnames(penguins_raw).&nbsp;&nbsp;</p>
+<p><strong>Improving reproducibility:</strong>&nbsp;</p>
+<p>In order to improve the reproducibility of this code, I would avoid using the install.packages("") function. It worked on my computer, but is liable to creating errors in R.&nbsp;&nbsp;</p>
+</section>
+<section id="if-you-needed-to-alter-your-partners-figure-using-their-code-do-you-think-it-would-be-easy-or-difficult-and-why" class="level5">
+<h5 class="anchored" data-anchor-id="if-you-needed-to-alter-your-partners-figure-using-their-code-do-you-think-it-would-be-easy-or-difficult-and-why"><em>If you needed to alter your partner's figure using their code, do you think it would be easy or difficult, and why?</em>&nbsp;</h5>
+<p>Overall, I think it would be relatively easy to alter a figure using my partner's code. The code was well-spaced, logically ordered and easy to follow; thus making minor edits manageable. The only thing that may make it difficult was that some line-by-line annotations, such as for building the bodymass_histogram, were absent. These would be helpful, if a coder was unfamiliar with any of the lines, and needed to make a specific edit.&nbsp;&nbsp;</p>
+</section>
+</section>
+<section id="part-d" class="level4">
+<h4 class="anchored" data-anchor-id="part-d">Part d)</h4>
+<section id="what-improvements-did-they-suggest-and-do-you-agree" class="level5">
+<h5 class="anchored" data-anchor-id="what-improvements-did-they-suggest-and-do-you-agree">What improvements did they suggest, and do you agree?</h5>
+<p>My partner suggested that my density plot chunk could have been split up for better readability. Whilst I deliberately chose to keep both graphs that produce the exploratory figure&nbsp;together in the same chunk to avoid potential confusion, I can appreciate how this may have been an overwhelming amount of code all at once. &nbsp;</p>
+<p>My partner suggested that the coding of my body mass density plot had a paragraph-like format that was difficult to read, due to the comments spilling over lines. I took this decision deliberately due to a perceived necessity to explain my code in great detail. For reproducibility, it is my opinion that all code should be addressed and explained, such that it can be interpreted by any person who wishes to interrogate my open, shared data pipeline. Since I generate two density plots, I chose to explain the first in great detail, such that with a full explanation of the code, the code for the second plot would not require this. However, this level of detail comes at a tradeoff, where my partner suggests it would make it harder to locate parts of the code to&nbsp;edit, on first glance. This I concur, but believe it is a tradeoff worth making, in the interests of reproducibility. My partner also suggested that indentations and tabs should be used here. They are, but due to the volume of annotation, I can see why it might look like they aren't. Again, I feel that in this instance, at the start of the pipeline when laying out my first sections of code, it is justified. They note that the section below reads more easily – this is a consequence of not requiring such detail, it having previously been covered above. &nbsp;</p>
+<p>My partner suggested that my exploratory plot should have been placed in my Introduction or Hypotheses section; and that running my statistical test should have been done inside my Statistical Methods section, as opposed to my Results section. However, I structured my data pipeline according to the recommendations of Mensch to maximise reproducibility. They stress the importance of displaying exploratory figures, and running of statistical tests, in the Results section. In order to allow the reader to gain a visual understanding of what the code is exploring at the very beginning, I could have perhaps generated a table&nbsp;that showed the head data for my variables of interest.&nbsp;<span class="citation" data-cites="mensch2017">(<a href="#ref-mensch2017" role="doc-biblioref">Mensch 2017</a>)</span></p>
+<p>My partner suggested that a script creating many graphs would benefit from functions generalising this code and stored elsewhere. Although I already have functions for cleaning the penguin data, saving my figures and bootstrapping my Pearson's correlation coefficients – I do not have any functions regarding graph generation. Moreover, since my folder for functions already exists in my Reproducible Figures Project, and GitHub Repository, I feel that this would be both a beneficial, and relatively simple addition to improve my code. &nbsp;</p>
+</section>
+<section id="what-did-you-learn-about-writing-code-for-other-people" class="level5">
+<h5 class="anchored" data-anchor-id="what-did-you-learn-about-writing-code-for-other-people">What did you learn about writing code for other people?</h5>
+<p>I have learnt the importance of <strong>structure</strong>. Using chunks helps to deliver code in a palatable way to an interested reader, such that they do not get overwhelmed. This is imperative from a reproducibility perspective – where any interested reader should be able to consume our open and shared data pipeline. At a micro- level, the use of tabs and indentations within code also facilitates this, as well as making any potential edits from future readers easier. &nbsp;</p>
+<p>I have learnt the importance of <strong>annotation</strong>. Whilst writing code, it was easy to become overly-familiar with my own data pipeline. Annotations remind me that it is necessary for a reader who is completely unfamiliar with the topic to still be able to understand my data pipeline with clarity. As such, providing personable introductory annotations throughout, and line-by-line detail initially, helped me to achieve this. &nbsp;</p>
+<p>I have&nbsp;learnt the importance of <strong>organisation</strong>. A data pipeline cannot be easily understood, and therefore is not reproducible, if it is unintelligibly organised. Utilising a read.me file in my GitHub repository to introduce my data pipeline; creating appropriately named folders for my data, functions and figures; and labelling chunks to track data pipeline progress helped this. &nbsp;</p>
+<p>Finally, I have learnt the importance of innate <strong>reproducibility</strong>; using a "renv" instead of install.packages(""), as well as comitting and pushing my files to an open and accessible GitHub Repository, such that my data pipeline should be as accessible and transparent as possible.</p>
 
+</section>
+</section>
 </section>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-efron1993" class="csl-entry" role="doc-biblioentry">
-Efron, Bradley. 1993. <em>An Introduction to the Bootstrap.</em> 1st ed. Vol. 1. 1st Series 1. Harvard: CRC Press. <a href="https://www.hms.harvard.edu/bss/neuro/bornlab/nb204/statistics/bootstrap.pdf">https://www.hms.harvard.edu/bss/neuro/bornlab/nb204/statistics/bootstrap.pdf</a>.
+Efron, Bradley. 1993a. <em>An Introduction to the Bootstrap.</em> 1st ed. Vol. 1. 1st Series 1. Harvard: CRC Press. <a href="https://www.hms.harvard.edu/bss/neuro/bornlab/nb204/statistics/bootstrap.pdf">https://www.hms.harvard.edu/bss/neuro/bornlab/nb204/statistics/bootstrap.pdf</a>.
+</div>
+<div id="ref-efron1993a" class="csl-entry" role="doc-biblioentry">
+———. 1993b. <em>An Introduction to the Bootstrap.</em> 1st ed. Vol. 1. 1st Series 1. Harvard: CRC Press. <a href="https://www.hms.harvard.edu/bss/neuro/bornlab/nb204/statistics/bootstrap.pdf">https://www.hms.harvard.edu/bss/neuro/bornlab/nb204/statistics/bootstrap.pdf</a>.
+</div>
+<div id="ref-evanthiakaimaklioti2021" class="csl-entry" role="doc-biblioentry">
+Evanthia Kaimaklioti, Samota. 2021. <span>“Knowledge and Attitudes Among Life Scientists Toward Reproducibility Within Journal Articles: A Research Survey.”</span> <em>Frontiers in Research Metrics and Analytics</em>, 1st series, 6 (1): 1–18. <a href="https://doi.org/10.3389/frma.2021.678554">https://doi.org/10.3389/frma.2021.678554</a>.
 </div>
 <div id="ref-hashash2022" class="csl-entry" role="doc-biblioentry">
 Hashash, El. 2022a. <span>“A Comparison of the Pearson, Spearman Rank and Kendall Tau Correlation Coefficients Using Quantitative Variables.”</span> <em>Asian Journal of Probability and Statistics.</em>, Correlations, 20. (1): 36–48. <a href="https://doi.org/10.9734/AJPAS/2022/v20i3425.">https://doi.org/10.9734/AJPAS/2022/v20i3425.</a>
@@ -574,20 +641,41 @@ Hashash, El. 2022a. <span>“A Comparison of the Pearson, Spearman Rank and Kend
 <div id="ref-hashash2022a" class="csl-entry" role="doc-biblioentry">
 ———. 2022b. <span>“A Comparison of the Pearson, Spearman Rank and Kendall Tau Correlation Coefficients Using Quantitative Variables.”</span> <em>Asian Journal of Probability and Statistics.</em>, Correlations, 20. (1): 36–48. <a href="https://doi.org/10.9734/AJPAS/2022/v20i3425.">https://doi.org/10.9734/AJPAS/2022/v20i3425.</a>
 </div>
+<div id="ref-hashash2022b" class="csl-entry" role="doc-biblioentry">
+———. 2022c. <span>“A Comparison of the Pearson, Spearman Rank and Kendall Tau Correlation Coefficients Using Quantitative Variables.”</span> <em>Asian Journal of Probability and Statistics.</em>, Correlations, 20. (1): 36–48. <a href="https://doi.org/10.9734/AJPAS/2022/v20i3425.">https://doi.org/10.9734/AJPAS/2022/v20i3425.</a>
+</div>
 <div id="ref-li2024" class="csl-entry" role="doc-biblioentry">
 Li, J. 2024. <span>“Morphometric Brain Organization Across the Human Lifespan Reveals Increased Dispersion Linked to Cognitive Performance.”</span> <em>PLOS Biology</em>, Neurology, 22 (6): 1–24. <a href="https://doi.org/e3002647.">https://doi.org/e3002647.</a>
 </div>
 <div id="ref-mccomb-turbitt2023" class="csl-entry" role="doc-biblioentry">
 McComb-Turbitt, SP. 2023. <span>“Diving Efficiency at Depth and Pre-Breeding Foraging Effort Increase with Haemoglobin Levels in Gentoo Penguins.”</span> <em>Marine Ecology Progress Series.</em>, Diving, 722. (1): 1–17. <a href="https://doi.org/10.3354/meps14441.">https://doi.org/10.3354/meps14441.</a>
 </div>
+<div id="ref-mensch2017" class="csl-entry" role="doc-biblioentry">
+Mensch, B. 2017. <span>“Ten Simple Rules for Structuring Papers.”</span> <em>PLOS Computational Biology</em>, Structuring, 13 (9): 1–9. <a href="https://doi.org/doi.org/10.1371">https://doi.org/doi.org/10.1371</a>.
+</div>
+<div id="ref-nguyen2021" class="csl-entry" role="doc-biblioentry">
+Nguyen, V. T. 2021. <span>“Examining Data Visualization Pitfalls in Scientific Publications.”</span> <em>Vis. Comput. Ind. Biomed. Art</em>, Examining, 4 (27): 1–15. <a href="https://doi.org/doi.org/10.1186/s42492-021-00092-y">https://doi.org/doi.org/10.1186/s42492-021-00092-y</a>.
+</div>
 <div id="ref-nijhout2012" class="csl-entry" role="doc-biblioentry">
 Nijhout, Frederik. 2012. <span>“Developmental Causes of Allometry: New Models and Implications for Phenotypic Plasticity and Evolution.”</span> <em>Integrative and Comparative Biology</em>, Allometry, Volume 52, (Issue 1): Pages 4352. <a href="https://academic.oup.com/icb/article/52/1/43/741331">https://academic.oup.com/icb/article/52/1/43/741331</a>.
+</div>
+<div id="ref-schwab2022" class="csl-entry" role="doc-biblioentry">
+Schwab, S. 2022a. <span>“Ten Simple Rules for Good Research Practice.”</span> <em>PLOS Computational Biology</em>, Research practice, 18 (6): e1010139. <a href="https://doi.org/doi.org/10.1371">https://doi.org/doi.org/10.1371</a>.
+</div>
+<div id="ref-schwab2022a" class="csl-entry" role="doc-biblioentry">
+———. 2022b. <span>“Ten Simple Rules for Good Research Practice.”</span> <em>PLOS Computational Biology</em>, Research practice, 18 (6): e1010139. <a href="https://doi.org/doi.org/10.1371">https://doi.org/doi.org/10.1371</a>.
 </div>
 <div id="ref-shingleton2010" class="csl-entry" role="doc-biblioentry">
 Shingleton, Alexander. 2010. <span>“Allometry: The Study of Biological Scaling.”</span> <em>Nature Education Knowledge</em>, Nature education, 3 (10): 2. <a href="https://www.nature.com/scitable/knowledge/library/allometry-the-study-of-biological-scaling-13228439/">https://www.nature.com/scitable/knowledge/library/allometry-the-study-of-biological-scaling-13228439/</a>.
 </div>
+<div id="ref-tufte2001" class="csl-entry" role="doc-biblioentry">
+Tufte, Edward. 2001. <em>The Visual Display of Quantitative Information</em>. 2nd ed. Vol. 1. 1st Series 1. Yale: Graphics Press. <a href="https://www.econ.upf.edu/~michael/visualdata/tufte-aesthetics_and_technique.pdf">https://www.econ.upf.edu/~michael/visualdata/tufte-aesthetics_and_technique.pdf</a>.
+</div>
 <div id="ref-wickham2023" class="csl-entry" role="doc-biblioentry">
-Wickham, Hadley. 2023. <em>R for Data Science: Import, Tidy, Transform, Visualise and Model Data</em>. 2nd ed. Vol. 1. 1st Series 2. Houston, Texas: O’Reilly Media. <a href="https://r4ds.hadley.nz">https://r4ds.hadley.nz</a>.
+Wickham, Hadley. 2023b. <em>R for Data Science: Import, Tidy, Transform, Visualise and Model Data</em>. 2nd ed. Vol. 1. 1st Series 2. Houston, Texas: O’Reilly Media. <a href="https://r4ds.hadley.nz">https://r4ds.hadley.nz</a>.
+</div>
+<div id="ref-wickham2023a" class="csl-entry" role="doc-biblioentry">
+———. 2023a. <em>R for Data Science: Import, Tidy, Transform, Visualise and Model Data</em>. 2nd ed. Vol. 1. 1st Series 2. Houston, Texas: O’Reilly Media. <a href="https://r4ds.hadley.nz">https://r4ds.hadley.nz</a>.
 </div>
 </div></section></div></main>
 <!-- /main column -->
