@@ -93,7 +93,7 @@ In my pipeline, having loaded and cleaned my data, I will pose my [questions]{.u
 
 Correlations between morphological traits (such as body mass and flipper length) are sometimes controlled by morphometric scaling [@shingleton2010]. Morphometrically-scaled correlations are underpinned by the study of allometry: differences in the morphological growth [@nijhout2012]. Allometry is a topic of current interest fundamentally, but also partly because morphological structure and function can exert a profound effect on an organism's ecology.
 
-I find penguin allometry a specifically interesting case study to run, because of the proposed effect of penguin morphology on ecology, arising from morphometric scaling. For example, we already know that Gentoo penguins, with a larger body mass and flipper length, can dive deeper to forage; due to their muscle mass [@mccomb-turbitt2023]. In order to explore whether this ecological phenomenon might be underpinned by morphometric scaling, investigating a potential correlation is an interesting place to start.
+I find penguin allometry a specifically interesting case study to run, because of the proposed effect of penguin morphology on ecology, arising from morphometric scaling. For example, we already know that Gentoo penguins, with a larger body mass and flipper length, can dive deeper to forage [@mccomb-turbitt2023]. In order to explore whether this ecological phenomenon might be underpinned by morphometric scaling, investigating a potential correlation is an interesting place to start.
 
 #### Hypothesis
 
@@ -117,7 +117,7 @@ $$r = \Sigma(x_i-\bar x)(y_i-\bar y)/ \sqrt\Sigma(x_i-\bar x)(y_i-\bar y)$$\$\$\
 
 To compare correlations between each species, I bootstrap the correlation coefficient estimates, in order to maximise statistical accuracy [@efron1993]. In order to make this bootstrapping reproducible, I have set a seed in my code.
 
-Pearson's correlation coefficient assumes that data are approximately linear. This can be visually assessed using my results figure. Moreover, Pearson's correlation coefficient assumes that data are distributed normally [@hashash2022a]. I have tested this in the [Supplementary Materials]{.underline} section, to validate it as an appropriate statistical method for this dataset.
+Pearson's correlation coefficient assumes that data are approximately linear. This can be visually assessed using my results figure (Fig 2). Moreover, Pearson's correlation coefficient assumes that data are distributed normally [@hashash2022a]. I have tested this in the [Supplementary Materials]{.underline} section, to validate it as an appropriate statistical method for this dataset.
 
 #### Results
 
@@ -130,7 +130,7 @@ Here, I generated a density figure to show the distribution of the raw data for 
 #| message: false
 #| warning: false
 #| label: exploratoryfigure
-#| fig-cap: Fig 1, exploratory figure
+#| fig-cap: "Fig 1: an exploratory figure. | Fig 1a shows the density plot for Body Mass. | Fig 1b shows the density plot for Flipper Length."
 
 ##Firstly, I create a density plot of body masses by species 
 
@@ -246,7 +246,7 @@ Correlations are more easily appreciated under visualisation. To facilitate this
 #| warning: false
 #| message: false
 #| label: results figure
-#| fig-cap: Fig 2, results figure
+#| fig-cap: "Fig 2, results figure. A scatter graph of flipper length (mm) against body mass (g), with regression lines and 95% CIs for each colour co-ordinated species."
 
 ## To create my Results Figure, I will generate a scatterplot of flipper length against body mass by species, showing the linear correlation with a regression line and 95% CIs for each species, and print the significant p-values atop this. 
 
@@ -350,9 +350,9 @@ The results of this bootstrapping of our Pearson's correlation coefficient estim
 
 Initially, I generated an exploratory figure of density plots for both body mass and flipper length, between all 3 species of penguin. It is clear that they display similar body masses and flipper lengths. However, an approximate hierarchy emerges that is recapitulated between both morphological traits, where Gentoos are the largest, Chinstraps are intermediate and Adélies are smallest. The overlapping densities would indicate that this is not significant, and as it is an exploratory figure, no formal statistical analysis was conducted.
 
-Our Pearson's correlation coefficient analysis outputted a highly significant correlation between body mass and flipper length for each of the 3 species, which is easily visualised using Fig 2. This allows us to reject our H~0~, and is indicative of morphometric scaling between the morphological traits of body mass and flipper length in each of the 3 species.
+My Pearson's correlation coefficient analysis outputted a highly significant correlation between body mass and flipper length for each of the 3 species, which is easily visualised using Fig 2. This allows me to reject H~0~, and is indicative of morphometric scaling between the morphological traits of body mass and flipper length in each of the 3 species.
 
-Finally, we tested whether there was a significant difference in the strength of any of the correlations between the 3 species. Due to overlapping 95% confidence intervals of the bootstrapped Pearson's correlation coefficients, we have no evidence to suggest this.
+Finally, I tested whether there was a significant difference in the strength of any of the correlations between the 3 species. Due to overlapping 95% confidence intervals of the bootstrapped Pearson's correlation coefficients, there is no evidence to suggest this.
 
 Taking all of this evidence together, we can infer that morphometric scaling does occur between body mass and flipper length for each of these 3 penguin species, and to a similar degree. As such, this does not support the proposition that morphometric scaling affects the ecology of these species'. Perhaps the ecological differences we observe, such as the ability of Gentoo penguins to forage deeper, arise from alternative sources: such as physiological differences. The testing of this hypothesis would require its own data collection and analysis.
 
@@ -405,11 +405,11 @@ Partner's GitHub link: [Partner's GitHub Link](https://github.com/ZigiButtercup/
 
 #### Part c)
 
-##### *What elements of your partner\'s code helped you to understand their data pipeline?* 
+##### *What elements of your partner's code helped you to understand their data pipeline?* 
 
-**My partner\'s code frequently used annotations excellently.**  
+**My partner's code frequently used annotations excellently.**  
 
-For example, annotations were sometimes used directly above code, in order to \"introduce\" it. When reading the code, this means that I did not have to puzzle over what it meant, as I was reading the code already having an idea of what it was going to do.  
+For example, annotations were sometimes used directly above code, in order to "introduce" it. When reading the code, this means that I did not have to puzzle over what it meant, as I was reading the code already having an idea of what it was going to do.  
 
 Annotations were also occasionally used within the code, to explain small inclusions (such as which =2). This extra detail made me, a person unfamiliar with that specific coding sequence, understand it better.  
 
@@ -419,25 +419,25 @@ Annotations was also implemented to explain both the statistical input, and the 
 
 Annotations also explained the choices of the coder, which I thought was excellent added detail. For example, they refer to the coding decisions they have made to maximise reproducibility, which is highly informative, and reassuring.  
 
-**My partner\'s code had excellent use of functions.**  
+**My partner's code had excellent use of functions.**  
 
-For example, their function to clean the data was appropriately named (\"penguins_clean\"), and stored in a \"functions\" folder, such that it could be easily accessed in their Project and GitHub repository. It was also referenced in their detailed read.me file in their GitHub Repository, so I knew where to find it.
+For example, their function to clean the data was appropriately named ("penguins_clean"), and stored in a "functions" folder, such that it could be easily accessed in their Project and GitHub repository. It was also referenced in their detailed read.me file in their GitHub Repository, so I knew where to find it.
 
-**My partner\'s code was highly organised.**  
+**My partner's code was highly organised.**  
 
-The generating of folders such as the aforementioned \"functions\", and also a \"data\" folder where the original data could be preserved as a read-only file. This is excellent from a reproducibility perspective. A folder was also created for \"figures\", which is highly beneficial from a reproducibility perspective, too.  
+The generating of folders such as the aforementioned "functions", and also a "data" folder where the original data could be preserved as a read-only file. This is excellent from a reproducibility perspective. A folder was also created for "figures", which is highly beneficial from a reproducibility perspective, too.  
 
-**My partner\'s code was, for the most part, highly reproducible.**  
+**My partner's code was, for the most part, highly reproducible.**  
 
 They used the here() path to avoid setting a working directory, which meant I was less likely to suffer errors in using their data.  
 
 **My partner's code used objects well.**  
 
-The naming of objects were frequently very apt. For example, the name of the object gentoo_dataset, when specifying to just one species, was very sensible, and clearly explained at this transition. Another example is gentoo_lm_unlogged; the use of \"unlogged\" was wise, as having both logged and unlogged data at this point in the pipeline necessitated extra specificity, to maximise clarity.  
+The naming of objects were frequently very apt. For example, the name of the object gentoo_dataset, when specifying to just one species, was very sensible, and clearly explained at this transition. Another example is gentoo_lm_unlogged; the use of "unlogged" was wise, as having both logged and unlogged data at this point in the pipeline necessitated extra specificity, to maximise clarity.  
 
 ##### *Did it run? Did you need to fix anything?* 
 
-My partner\'s code ran fine, and I did not need to fix anything.  
+My partner's code ran fine, and I did not need to fix anything.  
 
 ##### *What suggestions would you make for improving their code to make it more understandable or reproducible, and why?*  
 
@@ -445,11 +445,11 @@ My partner\'s code ran fine, and I did not need to fix anything.  
 
 In my opinion, some extra annotations would have been helpful, to thoroughly guide me through the code. For example, the initial library loading section is not annotated.  
 
-Abbreviations were also occasionally used, which could potentially lead to confusion. An example is \"homo\" instead of \"homoscedasticity\".  
+Abbreviations were also occasionally used, which could potentially lead to confusion. An example is "homo" instead of "homoscedasticity".  
 
 **Object naming:**  
 
-There were two objects whose names I felt could have been more specific to their use. The first was gentoo_explorplot (explor is abbreviated, and therefore potentially confusing). The second was gentoo_resultsplot; although this is indeed generating a results plot, I felt it would have been clearly to label it with the direct plot being produced: a scatter graph.  
+There were two objects whose names I felt could have been more specific to their use. The first was gentoo_explorplot (explor is abbreviated, and therefore potentially confusing). The second was gentoo_resultsplot; although this is indeed generating a results plot, I felt it would have been better to clearly label it with the direct plot being produced: a scatter graph.  
 
 **Redundant code:** 
 
@@ -457,11 +457,11 @@ Occasionally code was repeated, such as colnames(penguins_raw).  
 
 **Improving reproducibility:** 
 
-In order to improve the reproducibility of this code, I would avoid using the install.packages(\"\") function. It worked on my computer, but is liable to creating errors in R.  
+In order to improve the reproducibility of this code, I would avoid using the install.packages("") function. It worked on my computer, but is liable to creating errors in R.  
 
-##### *If you needed to alter your partner\'s figure using their code, do you think it would be easy or difficult, and why?* 
+##### *If you needed to alter your partner's figure using their code, do you think it would be easy or difficult, and why?* 
 
-Overall, I think it would be relatively easy to alter a figure using my partner\'s code. The code was well-spaced, logically ordered and easy to follow; thus making minor edits manageable. The only thing that may make it difficult was that some line-by-line annotations, such as for building the bodymass_histogram, were absent. These would be helpful, if a coder was unfamiliar with any of the lines, and needed to make a specific edit.  
+Overall, I think it would be relatively easy to alter a figure using my partner's code. The code was well-spaced, logically ordered and easy to follow; thus making minor edits manageable. The only thing that may make it difficult was that some line-by-line annotations, such as for building the bodymass_histogram, were absent. These would be helpful, if a coder was unfamiliar with any of the lines, and needed to make a specific edit.  
 
 #### Part d)
 
@@ -469,11 +469,11 @@ Overall, I think it would be relatively easy to alter a figure using my partner\
 
 My partner suggested that my density plot chunk could have been split up for better readability. Whilst I deliberately chose to keep both graphs that produce the exploratory figure together in the same chunk to avoid potential confusion, I can appreciate how this may have been an overwhelming amount of code all at once.  
 
-My partner suggested that the coding of my body mass density plot had a paragraph-like format that was difficult to read, due to the comments spilling over lines. I took this decision deliberately due to a perceived necessity to explain my code in great detail. For reproducibility, it is my opinion that all code should be addressed and explained, such that it can be interpreted by any person who wishes to interrogate my open, shared data pipeline. Since I generate two density plots, I chose to explain the first in great detail, such that with a full explanation of the code, the code for the second plot would not require this. However, this level of detail comes at a tradeoff, where my partner suggests it would make it harder to locate parts of the code to edit, on first glance. This I concur, but believe it is a tradeoff worth making, in the interests of reproducibility. My partner also suggested that indentations and tabs should be used here. They are, but due to the volume of annotation, I can see why it might look like they aren\'t. Again, I feel that in this instance, at the start of the pipeline when laying out my first sections of code, it is justified. They note that the section below reads more easily -- this is a consequence of not requiring such detail, it having previously been covered above.  
+My partner suggested that the coding of my body mass density plot had a paragraph-like format that was difficult to read, due to the comments spilling over lines. I took this decision deliberately due to a perceived necessity to explain my code in great detail. For reproducibility, it is my opinion that all code should be addressed and explained at least once, such that it can be interpreted by any person who wishes to interrogate my open, shared data pipeline. Since I generate two density plots, I chose to explain the first in great detail, such that with a full explanation of the code, the code for the second plot would not require this. However, this level of detail comes at a tradeoff, where my partner suggests it would make it harder to locate parts of the code to edit, on first glance. This I concur, but believe it is a tradeoff worth making, in the interests of reproducibility. My partner also suggested that indentations and tabs should be used here. They are, but due to the volume of annotation, I can see why it might look like they aren't. Again, I feel that in this instance, at the start of the pipeline when laying out my first sections of code, it is justified. They note that the section below reads more easily -- this is a consequence of not requiring such detail, it having previously been covered above.  
 
 My partner suggested that my exploratory plot should have been placed in my Introduction or Hypotheses section; and that running my statistical test should have been done inside my Statistical Methods section, as opposed to my Results section. However, I structured my data pipeline according to the recommendations of Mensch to maximise reproducibility. They stress the importance of displaying exploratory figures, and running of statistical tests, in the Results section. In order to allow the reader to gain a visual understanding of what the code is exploring at the very beginning, I could have perhaps generated a table that showed the head data for my variables of interest. [@mensch2017]
 
-My partner suggested that a script creating many graphs would benefit from functions generalising this code and stored elsewhere. Although I already have functions for cleaning the penguin data, saving my figures and bootstrapping my Pearson\'s correlation coefficients -- I do not have any functions regarding graph generation. Moreover, since my folder for functions already exists in my Reproducible Figures Project, and GitHub Repository, I feel that this would be both a beneficial, and relatively simple addition to improve my code.  
+My partner suggested that a script creating many graphs would benefit from functions generalising this code and stored elsewhere. Although I already have functions for cleaning the penguin data, saving my figures, and bootstrapping my Pearson's correlation coefficients -- I do not have any functions regarding graph generation. Moreover, since my folder for functions already exists in my Reproducible Figures Project, and GitHub Repository, I feel that this would be both a beneficial, and relatively simple addition to improve my code.  
 
 ##### What did you learn about writing code for other people?
 
@@ -483,4 +483,4 @@ I have learnt the importance of **annotation**. Whilst writing code, it was easy
 
 I have learnt the importance of **organisation**. A data pipeline cannot be easily understood, and therefore is not reproducible, if it is unintelligibly organised. Utilising a read.me file in my GitHub repository to introduce my data pipeline; creating appropriately named folders for my data, functions and figures; and labelling chunks to track data pipeline progress helped this.  
 
-Finally, I have learnt the importance of innate **reproducibility**; using a \"renv\" instead of install.packages(\"\"), as well as comitting and pushing my files to an open and accessible GitHub Repository, such that my data pipeline should be as accessible and transparent as possible.
+Finally, I have learnt the importance of innate **reproducibility**; using a "renv" instead of install.packages(""), as well as comitting and pushing my files to an open and accessible GitHub Repository, such that my data pipeline should be as accessible and transparent as possible.
