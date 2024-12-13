@@ -1,6 +1,7 @@
 ---
 title: "Reproducible Figures - Assessed"
 format: html
+embed-resources: true
 fig-width: 10
 fig-height: 9
 editor: visual
