@@ -64,6 +64,10 @@ My misleading graph is the following:
 
 #creating a misleading graph using the ggplot function 
 
+#setting a seed for the jitter, for reproducibility 
+
+set.seed(296)
+
 ggplot(penguins_clean, aes(x = culmen_length_mm, y = body_mass_g)) + #assigning data and axes
   geom_point(aes(color = island), alpha = 0.5) + #scatter graph format, assigning islands 
   geom_jitter(aes(color = island), width = 20, height = 20) + #increasing jitter on islands
